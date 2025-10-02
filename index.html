@@ -2,410 +2,584 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Control Financiero</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Market List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-text-size-adjust: 100%;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #7b42f6;
+            --background: #0a0a14;
+            --surface: #1a1a2e;
+            --surface-light: #2d2d44;
+            --text: #ffffff;
+            --text-secondary: #b0b0cc;
+            --success: #00e676;
+            --warning: #ff9100;
+            --error: #ff5252;
+            --accent: #ff4081;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #16213e 100%);
+            color: var(--text);
             min-height: 100vh;
             padding: 10px;
-            padding-bottom: env(safe-area-inset-bottom, 20px);
-            line-height: 1.4;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1000px;
+        .app-container {
+            max-width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
+            background: var(--surface);
+            border-radius: 20px;
             padding: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--surface-light);
         }
 
         .header {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 20px 15px;
-            border-radius: 12px;
             text-align: center;
-            margin-bottom: 20px;
+            padding: 10px 0 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--surface-light);
         }
 
         .header h1 {
-            font-size: clamp(1.3em, 5vw, 1.8em);
-            margin-bottom: 15px;
+            font-size: 24px;
             font-weight: 700;
-        }
-
-        .total-display {
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .total-amount {
-            font-size: clamp(1.8em, 8vw, 2.5em);
-            font-weight: bold;
-        }
-
-        .section {
-            background: #f9f9f9;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #4CAF50;
-            padding-bottom: 12px;
-            font-size: clamp(1.1em, 4vw, 1.3em);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .total-gastos {
-            font-size: clamp(1em, 4vw, 1.2em);
-            color: #B22222;
-            font-weight: bold;
-        }
-
-        .cuentas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .cuenta-card {
-            background: white;
-            border: 2px solid #4CAF50;
-            border-radius: 10px;
-            padding: 15px;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .cuenta-card h3 {
-            color: #2E7D32;
-            margin-bottom: 10px;
-            font-size: clamp(0.9em, 3vw, 1.1em);
-        }
-
-        .cuenta-saldo {
-            font-size: clamp(1.2em, 5vw, 1.6em);
-            font-weight: bold;
-            color: #333;
-        }
-
-        .btn-delete-cuenta {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #B22222;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            font-size: 0.8em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            z-index: 10;
-        }
-
-        .btn {
-            padding: 14px 18px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: clamp(0.9em, 3.5vw, 1em);
-            transition: all 0.2s;
-            margin: 5px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .btn-primary {
-            background: #00A86B;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #008f5c;
-        }
-
-        .btn-danger {
-            background: #B22222;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #9a1c1c;
-        }
-
-        .btn-secondary {
-            background: #2196F3;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #1976D2;
-        }
-
-        .btn-export {
-            background: #FF9800;
-            color: white;
-        }
-
-        .btn-export:hover {
-            background: #F57C00;
-        }
-
-        .btn-income {
-            background: #00A86B;
-            color: white;
-        }
-
-        .btn-transfer {
-            background: #3399FF;
-            color: white;
-        }
-
-        .btn-transfer:hover {
-            background: #0077CC;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .gastos-list {
-            margin-top: 20px;
-        }
-
-        .gasto-item {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-        }
-
-        .gasto-item.pagado {
-            border-color: #00A86B;
-            background: #e8f5e9;
-        }
-
-        .gasto-item.transferido {
-            border-color: #3399FF;
-            background: #e3f2fd;
-        }
-
-        .gasto-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .gasto-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .gasto-nombre {
-            font-weight: bold;
-            font-size: clamp(1em, 3.5vw, 1.1em);
-            color: #333;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
-            word-break: break-word;
         }
 
-        .gasto-monto {
-            font-size: clamp(1.1em, 4vw, 1.3em);
-            color: #2E7D32;
-            font-weight: bold;
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
-        .gasto-transferido {
-            font-size: clamp(0.9em, 3vw, 1em);
-            color: #3399FF;
-            font-weight: bold;
-            margin-top: 5px;
+        .input-section {
+            margin-bottom: 20px;
         }
 
-        .gasto-pendiente {
-            font-size: clamp(0.9em, 3vw, 1em);
-            color: #B22222;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .gasto-actions {
+        .input-row {
             display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
         }
 
-        .status-badge {
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: clamp(0.8em, 3vw, 0.9em);
-            min-width: 100px;
+        .autocomplete-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .item-name-input, .price-input {
+            padding: 14px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .item-name-input {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid var(--surface-light);
+        }
+
+        .item-name-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+
+        .price-input {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid var(--surface-light);
             text-align: center;
-            border: 2px solid transparent;
         }
 
-        .status-pendiente {
-            background: #ffebee;
-            color: #B22222;
-            border-color: #B22222;
+        .price-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
         }
 
-        .status-transferido {
-            background: #e3f2fd;
-            color: #3399FF;
-            border-color: #3399FF;
-        }
-
-        .status-pagado-badge {
-            background: #e8f5e9;
-            color: #00A86B;
-            border-color: #00A86B;
-        }
-
-        .gasto-cuenta {
-            font-size: clamp(0.8em, 2.5vw, 0.9em);
-            color: #666;
-            font-style: italic;
-            margin-top: 5px;
-        }
-
-        .debitos-list {
-            max-height: 40vh;
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface-light);
+            border-radius: 0 0 12px 12px;
+            max-height: 200px;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
         }
 
-        .debito-item {
-            background: white;
-            border-left: 4px solid #B22222;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+        .autocomplete-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .autocomplete-name {
+            font-weight: 500;
+        }
+
+        .autocomplete-price {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        .controls-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            position: relative;
         }
 
-        .debito-item.pago {
-            border-left-color: #00A86B;
-            background: #e8f5e9;
+        .control-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-width: 110px;
         }
 
-        .debito-item.ingreso {
-            border-left-color: #00A86B;
-            background: #e8f5e9;
+        .label-icon {
+            color: var(--primary);
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
         }
 
-        .debito-item.transferencia {
-            border-left-color: #3399FF;
-            background: #e3f2fd;
-        }
-
-        .debito-info {
+        .control-input {
             flex: 1;
-            min-width: 0;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            font-size: 16px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid var(--surface-light);
         }
 
-        .debito-fecha {
-            font-size: clamp(0.75em, 2.5vw, 0.85em);
-            color: #666;
-            margin-bottom: 4px;
+        .control-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
         }
 
-        .debito-descripcion {
+        .add-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
             font-weight: bold;
-            color: #333;
-            font-size: clamp(0.85em, 3vw, 1em);
-            word-break: break-word;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 212, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .debito-monto {
-            font-size: clamp(1em, 4vw, 1.2em);
-            font-weight: bold;
-            color: #B22222;
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            background: var(--surface-light);
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, var(--error), #d32f2f);
+            color: white;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--success), #00c853);
+            color: white;
+        }
+
+        .items-list-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .items-list {
+            background: var(--surface-light);
+            border-radius: 15px;
+            padding: 12px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .item-row:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Prevenir desbordamiento */
+        }
+
+        .item-name {
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-info {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: var(--text-secondary);
+            gap: 8px;
+        }
+
+        .price-history {
+            font-size: 11px;
+            color: var(--accent);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .item-price-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            min-width: 90px;
             flex-shrink: 0;
         }
 
-        .debito-monto.pago {
-            color: #00A86B;
+        .item-price {
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+            text-align: right;
+            padding: 5px 10px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            width: 100%;
         }
 
-        .debito-monto.ingreso {
-            color: #00A86B;
+        .item-actions {
+            display: flex;
+            gap: 6px;
+            margin-left: 8px;
         }
 
-        .debito-monto.transferencia {
-            color: #3399FF;
+        .item-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 8px;
+            width: 34px;
+            height: 34px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        .btn-edit-debito {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #2196F3;
+        .item-action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .summary-section {
+            background: var(--surface-light);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 16px;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .tax-row .summary-label {
+            color: var(--warning);
+        }
+
+        .tax-row .summary-value {
+            color: var(--warning);
+        }
+
+        .total-row {
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            margin-top: 12px;
+            padding-top: 15px;
+            font-size: 18px;
+        }
+
+        .total-row .summary-label {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text);
+        }
+
+        .total-row .summary-value {
+            font-size: 22px;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .summary-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .summary-action-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.7em;
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(123, 66, 246, 0.3);
+        }
+
+        .summary-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(123, 66, 246, 0.4);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, var(--error), #d32f2f);
+        }
+
+        .bottom-action-bar {
+            display: flex;
+            justify-content: space-between;
+            background: var(--surface-light);
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .bottom-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+        }
+
+        .bottom-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, var(--success), #00c853);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, var(--error), #d32f2f);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--surface-light);
         }
 
         .modal {
@@ -415,20 +589,23 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(10, 10, 20, 0.9);
             z-index: 1000;
-            overflow-y: auto;
-            padding: 10px;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background: white;
-            width: 95%;
-            max-width: 500px;
-            margin: 20px auto;
-            border-radius: 15px;
+            background: var(--surface);
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            max-width: 100%;
+            width: 400px;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--surface-light);
         }
 
         .modal-header {
@@ -437,1208 +614,930 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 1px solid var(--surface-light);
         }
 
-        .modal-header h3 {
-            font-size: clamp(1.1em, 4vw, 1.4em);
-            color: #333;
-            font-weight: 600;
+        .modal-header h2 {
+            color: var(--text);
+            font-size: 22px;
+            font-weight: 700;
         }
 
-        .close {
-            font-size: 28px;
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
             cursor: pointer;
-            color: #999;
-            line-height: 1;
-            padding: 5px;
-            min-width: 44px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        .form-group {
+        .modal-close:hover {
+            color: var(--error);
+        }
+
+        .settings-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .settings-label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-            font-size: clamp(0.9em, 3.5vw, 1em);
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
-        .form-group input, .form-group select {
+        .settings-input, .settings-select {
             width: 100%;
             padding: 14px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--surface-light);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
             font-size: 16px;
-            background: #fff;
         }
 
-        .form-group input[type="datetime-local"] {
-            font-size: 14px;
+        .settings-input:focus, .settings-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
         }
 
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 25px;
-            flex-wrap: wrap;
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 212, 255, 0.3);
         }
 
-        .mes-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 212, 255, 0.4);
         }
 
-        .mes-selector select {
-            padding: 12px;
-            border: 2px solid #4CAF50;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: clamp(0.9em, 3.5vw, 1em);
-            background: white;
-            flex: 1;
-            min-width: 150px;
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .auto-save-status {
-            font-size: clamp(0.8em, 3vw, 0.9em);
-            color: #666;
-            text-align: center;
-            margin-top: 15px;
-            padding: 10px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            font-weight: 500;
+        ::-webkit-scrollbar-track {
+            background: var(--surface-light);
+            border-radius: 10px;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 12px;
-                border-radius: 12px;
-            }
-            
-            .section {
-                padding: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                margin: 3px 0;
-            }
-            
-            .gasto-header {
-                flex-direction: column;
-            }
-            
-            .gasto-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 5px;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-            
-            .header {
-                padding: 15px 10px;
-            }
-            
-            .cuentas-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
-                width: 100%;
-                margin: 10px auto;
-                border-radius: 10px;
-                padding: 15px;
-            }
-            
-            .mes-selector {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .mes-selector select {
-                min-width: auto;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
-        input, select, textarea {
-            font-size: 16px !important;
+        /* Responsive para móviles */
+        @media (min-width: 480px) {
+            .app-container {
+                max-width: 480px;
+                padding: 20px;
+            }
+            
+            .input-row {
+                flex-direction: row;
+            }
+            
+            .autocomplete-container {
+                width: auto;
+                flex: 2;
+            }
+            
+            .price-input {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>CONTROL FINANCIERO</h1>
-            <div class="total-display">
-                <h2>TOTAL DISPONIBLE</h2>
-                <div class="total-amount" id="totalAmount">$0.00</div>
-            </div>
-        </div>
+    <div class="app-container">
+        <header class="header">
+            <h1><i class="fas fa-shopping-basket"></i> Smart Market List</h1>
+            <p>Controla tus gastos del supermercado</p>
+        </header>
 
-        <div class="section">
-            <h2>MIS CUENTAS</h2>
-            <div class="cuentas-grid" id="cuentasGrid"></div>
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="agregarCuenta()">+ AGREGAR CUENTA</button>
-                <button class="btn btn-secondary" onclick="editarSaldoCuenta()">EDITAR SALDO</button>
-            </div>
-        </div>
+        <main class="main-content">
+            <section class="input-section">
+                <div class="input-row">
+                    <div class="autocomplete-container">
+                        <input type="text" id="itemName" placeholder="Nombre del producto" class="item-name-input" autocomplete="off">
+                        <div class="autocomplete-list" id="autocompleteList"></div>
+                    </div>
+                    <input type="number" id="itemPrice" placeholder="0.00" class="price-input" step="0.01" min="0">
+                </div>
+                
+                <div class="controls-row">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-balance-scale label-icon"></i>
+                            CANTIDAD
+                        </label>
+                        <input type="number" id="quantity" value="1" class="control-input" min="1">
+                        <button class="add-btn" id="addItemBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i class="fas fa-receipt label-icon"></i>
+                            ITBMS %
+                        </label>
+                        <input type="number" id="tax" value="0" class="control-input" min="0" max="100" step="0.1">
+                    </div>
+                </div>
 
-        <div class="section">
-            <div class="mes-selector">
-                <label style="font-weight: bold;">MES:</label>
-                <select id="mesSelectorGastos" onchange="cambiarMes()"></select>
-            </div>
-            <h2>
-                <span>GASTOS RECURRENTES</span>
-                <span class="total-gastos" id="totalGastos">$0.00</span>
-            </h2>
-            <div class="gastos-list" id="gastosList"></div>
-            <div class="btn-group">
-                <!-- BOTÓN MANTENIDO CON COLOR ORIGINAL -->
-                <button class="btn btn-primary" onclick="agregarGasto()">+ AGREGAR GASTO</button>
-                <button class="btn btn-danger" onclick="resetearMes()">RESETEAR MES</button>
-            </div>
-        </div>
+                <div class="action-buttons">
+                    <button class="action-btn delete-btn" id="deleteBtn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="action-btn nav-btn" id="prevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="action-btn nav-btn" id="nextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="action-btn save-btn" id="saveBtn">
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+            </section>
 
-        <div class="section">
-            <h2>MOVIMIENTOS</h2>
-            <div class="btn-group">
-                <button class="btn btn-danger" onclick="registrarDebito()">+ REGISTRAR GASTO</button>
-                <button class="btn btn-income" onclick="registrarIngreso()">+ REGISTRAR INGRESO</button>
-                <button class="btn btn-transfer" onclick="registrarTransferencia()">+ TRANSFERENCIA</button>
-            </div>
-            <div class="debitos-list" id="debitosList"></div>
-        </div>
+            <section class="items-list-section">
+                <div class="section-title">
+                    <i class="fas fa-list"></i>
+                    <span>LISTA DE PRODUCTOS</span>
+                </div>
+                <div class="items-list" id="itemsList">
+                    <div class="empty-state">
+                        <i class="fas fa-cart-plus"></i>
+                        <p>No hay productos en la lista</p>
+                    </div>
+                </div>
+            </section>
 
-        <div class="section">
-            <h2>RESPALDO Y EXPORTACIÓN</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 15px;">Los datos se guardan automáticamente</p>
-            <div class="btn-group">
-                <button class="btn btn-export" onclick="exportarCSV()">EXPORTAR CSV</button>
-                <button class="btn btn-secondary" onclick="importarCSV()">IMPORTAR CSV</button>
-                <button class="btn btn-danger" onclick="limpiarTodo()">LIMPIAR TODO</button>
-            </div>
-            <div class="auto-save-status" id="autoSaveStatus">Estado: Guardado</div>
-        </div>
+            <section class="summary-section">
+                <div class="summary-row">
+                    <span class="summary-label">Sub Total</span>
+                    <span class="summary-value" id="subTotal">0.00</span>
+                </div>
+                <div class="summary-row tax-row">
+                    <span class="summary-label">ITBMS (+)</span>
+                    <span class="summary-value" id="itemTaxes">0.00</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span class="summary-label">TOTAL</span>
+                    <span class="summary-value" id="totalAmount">0.00</span>
+                </div>
+                
+                <div class="summary-actions">
+                    <button class="summary-action-btn undo-btn" id="undoBtn">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button class="summary-action-btn clear-btn" id="clearBtn">
+                        <i class="fas fa-broom"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section class="bottom-action-bar">
+                <button class="bottom-btn" id="newListBtn">
+                    <i class="fas fa-file"></i>
+                </button>
+                <button class="bottom-btn" id="exportBtn">
+                    <i class="fas fa-file-export"></i>
+                </button>
+                <button class="bottom-btn" id="currencyBtn">
+                    <i class="fas fa-dollar-sign"></i>
+                </button>
+                <button class="bottom-btn" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="bottom-btn" id="helpBtn">
+                    <i class="fas fa-question"></i>
+                </button>
+            </section>
+        </main>
     </div>
 
-    <div id="modal" class="modal">
+    <!-- Modal de Configuración -->
+    <div class="modal" id="settingsModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Acción</h3>
-                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h2><i class="fas fa-sliders-h"></i> Configuración</h2>
+                <button class="modal-close" id="closeSettings">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div id="modalBody"></div>
+            <div class="settings-group">
+                <label class="settings-label">Moneda:</label>
+                <select id="currencySelect" class="settings-select">
+                    <option value="$">Dólar ($)</option>
+                    <option value="€">Euro (€)</option>
+                    <option value="¢">Colón (¢)</option>
+                    <option value="Bs">Bolívar (Bs)</option>
+                    <option value="S/">Sol (S/)</option>
+                </select>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">ITBMS por defecto (%):</label>
+                <input type="number" id="defaultTax" class="settings-input" min="0" max="100" step="0.1" value="0">
+            </div>
+            <button id="saveSettings" class="btn-primary">
+                <i class="fas fa-check"></i> Guardar Configuración
+            </button>
         </div>
     </div>
 
-    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
-
     <script>
-        // DATOS Y ESTADO
-        let datos = {
-            cuentas: {},
-            gastosPorMes: {},
-            debitos: []
-        };
-
-        let mesActual = '';
-
-        // INICIALIZACIÓN
-        function iniciar() {
-            cargarDatos();
-            inicializarMes();
-            generarSelectorMeses();
-            actualizarCuentas();
-            actualizarGastos();
-            actualizarDebitos();
-            calcularTotal();
-            calcularTotalGastos();
-        }
-
-        function inicializarMes() {
-            const hoy = new Date();
-            mesActual = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
-            
-            if (!datos.gastosPorMes[mesActual]) {
-                datos.gastosPorMes[mesActual] = {};
-            }
-            guardarDatos();
-        }
-
-        function generarSelectorMeses() {
-            const selector = document.getElementById('mesSelectorGastos');
-            if (!selector) return;
-            
-            selector.innerHTML = '';
-            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            
-            const hoy = new Date();
-            for (let i = -6; i <= 6; i++) {
-                const fecha = new Date(hoy.getFullYear(), hoy.getMonth() + i, 1);
-                const mesKey = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
-                const mesNombre = `${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
-                
-                const option = document.createElement('option');
-                option.value = mesKey;
-                option.textContent = mesNombre;
-                
-                if (mesKey === mesActual) {
-                    option.selected = true;
-                }
-                
-                selector.appendChild(option);
-            }
-        }
-
-        function cambiarMes() {
-            const selector = document.getElementById('mesSelectorGastos');
-            mesActual = selector.value;
-            
-            if (!datos.gastosPorMes[mesActual]) {
-                datos.gastosPorMes[mesActual] = {};
-            }
-            
-            actualizarGastos();
-        }
-
-        // ALMACENAMIENTO
-        function cargarDatos() {
-            try {
-                const guardado = localStorage.getItem('finanzas_datos');
-                if (guardado) {
-                    datos = JSON.parse(guardado);
-                    if (!datos.gastosPorMes) datos.gastosPorMes = {};
-                    if (!datos.cuentas) datos.cuentas = {};
-                    if (!datos.debitos) datos.debitos = [];
-                }
-            } catch (error) {
-                console.error('Error al cargar datos:', error);
-            }
-        }
-
-        function guardarDatos() {
-            try {
-                localStorage.setItem('finanzas_datos', JSON.stringify(datos));
-                return true;
-            } catch (error) {
-                console.error('Error al guardar:', error);
-                return false;
-            }
-        }
-
-        // CUENTAS
-        function calcularTotal() {
-            const total = Object.values(datos.cuentas).reduce((sum, val) => sum + val, 0);
-            const elemento = document.getElementById('totalAmount');
-            if (elemento) {
-                elemento.textContent = `$${total.toFixed(2)}`;
-            }
-        }
-
-        function actualizarCuentas() {
-            const grid = document.getElementById('cuentasGrid');
-            if (!grid) return;
-
-            grid.innerHTML = '';
-
-            Object.keys(datos.cuentas).forEach(nombre => {
-                const card = document.createElement('div');
-                card.className = 'cuenta-card';
-                card.innerHTML = `
-                    <button class="btn-delete-cuenta" onclick="eliminarCuenta('${nombre}')">X</button>
-                    <h3>${nombre}</h3>
-                    <div class="cuenta-saldo">$${datos.cuentas[nombre].toFixed(2)}</div>
-                `;
-                grid.appendChild(card);
-            });
-
-            calcularTotal();
-        }
-
-        function agregarCuenta() {
-            mostrarModal(`
-                <div class="form-group">
-                    <label>Nombre de la Cuenta:</label>
-                    <input type="text" id="nombreCuenta" placeholder="Ej: MERCANTIL">
-                </div>
-                <div class="form-group">
-                    <label>Saldo Inicial:</label>
-                    <input type="number" id="saldoCuenta" step="0.01" value="0">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="guardarCuenta()">GUARDAR</button>
-                    <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                </div>
-            `, 'Agregar Cuenta');
-        }
-
-        function guardarCuenta() {
-            const nombre = document.getElementById('nombreCuenta').value.trim().toUpperCase();
-            const saldo = parseFloat(document.getElementById('saldoCuenta').value) || 0;
-
-            if (nombre) {
-                datos.cuentas[nombre] = saldo;
-                guardarDatos();
-                actualizarCuentas();
-                cerrarModal();
-            } else {
-                alert('Ingresa un nombre para la cuenta');
-            }
-        }
-
-        function editarSaldoCuenta() {
-            if (Object.keys(datos.cuentas).length === 0) {
-                alert('No hay cuentas para editar');
-                return;
-            }
-
-            let html = '<div class="form-group"><label>Selecciona la cuenta:</label><select id="cuentaEditar">';
-            Object.keys(datos.cuentas).forEach(nombre => {
-                html += `<option value="${nombre}">${nombre} - $${datos.cuentas[nombre].toFixed(2)}</option>`;
-            });
-            html += `</select></div>
-                <div class="form-group">
-                    <label>Nuevo Saldo:</label>
-                    <input type="number" id="nuevoSaldo" step="0.01" placeholder="Nuevo saldo">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="guardarSaldoEditado()">ACTUALIZAR</button>
-                    <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                </div>`;
-            
-            mostrarModal(html, 'Editar Saldo');
-        }
-
-        function guardarSaldoEditado() {
-            const cuenta = document.getElementById('cuentaEditar').value;
-            const nuevoSaldo = parseFloat(document.getElementById('nuevoSaldo').value);
-
-            if (!cuenta) {
-                alert('Selecciona una cuenta');
-                return;
-            }
-
-            if (isNaN(nuevoSaldo) || nuevoSaldo < 0) {
-                alert('Ingresa un monto válido');
-                return;
-            }
-
-            datos.cuentas[cuenta] = nuevoSaldo;
-            guardarDatos();
-            actualizarCuentas();
-            cerrarModal();
-        }
-
-        function eliminarCuenta(nombre) {
-            if (confirm(`¿Eliminar cuenta ${nombre}?`)) {
-                delete datos.cuentas[nombre];
-                guardarDatos();
-                actualizarCuentas();
-            }
-        }
-
-        // GASTOS RECURRENTES CON 3 ESTADOS
-        function calcularTotalGastos() {
-            const gastosMes = datos.gastosPorMes[mesActual] || {};
-            const total = Object.values(gastosMes).reduce((sum, gasto) => sum + gasto.monto, 0);
-            const elemento = document.getElementById('totalGastos');
-            if (elemento) {
-                elemento.textContent = `$${total.toFixed(2)}`;
-            }
-        }
-
-        function actualizarGastos() {
-            const list = document.getElementById('gastosList');
-            if (!list) return;
-
-            list.innerHTML = '';
-            const gastosMes = datos.gastosPorMes[mesActual] || {};
-
-            if (Object.keys(gastosMes).length === 0) {
-                list.innerHTML = '<p style="color: #666; text-align: center;">No hay gastos este mes</p>';
-                calcularTotalGastos();
-                return;
-            }
-
-            Object.keys(gastosMes).forEach(nombre => {
-                const gasto = gastosMes[nombre];
-                const item = document.createElement('div');
-                item.className = `gasto-item ${gasto.estado === 'pagado' ? 'pagado' : ''} ${gasto.estado === 'transferido' ? 'transferido' : ''}`;
-                
-                let estadoInfo = '';
-                
-                if (gasto.estado === 'transferido') {
-                    estadoInfo = `<div class="gasto-transferido">Transferido: $${gasto.montoTransferido.toFixed(2)} / $${gasto.monto.toFixed(2)}</div>`;
-                    if (gasto.cuentaOrigen && gasto.cuentaDestino) {
-                        estadoInfo += `<div class="gasto-cuenta">De ${gasto.cuentaOrigen} a ${gasto.cuentaDestino}</div>`;
-                    }
-                } else if (gasto.estado === 'pagado') {
-                    estadoInfo = `<div class="gasto-cuenta">Pagado desde: ${gasto.cuentaPago || gasto.cuentaDestino}</div>`;
-                } else {
-                    estadoInfo = `<div class="gasto-pendiente">Pendiente: $${gasto.monto.toFixed(2)}</div>`;
-                }
-                
-                item.innerHTML = `
-                    <div class="gasto-header">
-                        <div class="gasto-info">
-                            <div class="gasto-nombre">${nombre}</div>
-                            <div class="gasto-monto">$${gasto.monto.toFixed(2)}</div>
-                            ${estadoInfo}
-                        </div>
-                        <div class="gasto-actions">
-                            <span class="status-badge ${gasto.estado === 'pagado' ? 'status-pagado-badge' : gasto.estado === 'transferido' ? 'status-transferido' : 'status-pendiente'}" 
-                                  onclick="cambiarEstadoGasto('${nombre}')">
-                                ${gasto.estado === 'pagado' ? 'PAGADO' : gasto.estado === 'transferido' ? 'TRANSFERIDO' : 'PENDIENTE'}
-                            </span>
-                            <button class="btn btn-secondary" onclick="editarGasto('${nombre}')">EDITAR</button>
-                            <button class="btn btn-danger" onclick="eliminarGasto('${nombre}')">X</button>
-                        </div>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-
-            calcularTotalGastos();
-        }
-
-        function agregarGasto() {
-            mostrarModal(`
-                <div class="form-group">
-                    <label>Nombre del Gasto:</label>
-                    <input type="text" id="nombreGasto" placeholder="Ej: LUZ">
-                </div>
-                <div class="form-group">
-                    <label>Monto Total:</label>
-                    <input type="number" id="montoGasto" step="0.01" placeholder="0.00">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="guardarGasto()">GUARDAR</button>
-                    <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                </div>
-            `, 'Agregar Gasto');
-        }
-
-        function guardarGasto() {
-            const nombre = document.getElementById('nombreGasto').value.trim().toUpperCase();
-            const monto = parseFloat(document.getElementById('montoGasto').value) || 0;
-
-            if (nombre && monto > 0) {
-                if (!datos.gastosPorMes[mesActual]) {
-                    datos.gastosPorMes[mesActual] = {};
-                }
-                
-                datos.gastosPorMes[mesActual][nombre] = { 
-                    monto: monto, 
-                    estado: 'pendiente',
-                    montoTransferido: 0,
-                    cuentaOrigen: null,
-                    cuentaDestino: null,
-                    cuentaPago: null
+        class ShoppingCalculator {
+            constructor() {
+                this.items = [];
+                this.currentItemIndex = -1;
+                this.undoStack = [];
+                this.settings = {
+                    currency: '$',
+                    defaultTax: 0
                 };
-                guardarDatos();
-                actualizarGastos();
-                cerrarModal();
-            } else {
-                alert('Ingresa nombre y monto válidos');
-            }
-        }
-
-        function editarGasto(nombre) {
-            const gasto = datos.gastosPorMes[mesActual][nombre];
-            mostrarModal(`
-                <div class="form-group">
-                    <label>Nuevo Monto Total:</label>
-                    <input type="number" id="nuevoMontoGasto" step="0.01" value="${gasto.monto}">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="guardarEdicionGasto('${nombre}')">GUARDAR</button>
-                    <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                </div>
-            `, `Editar: ${nombre}`);
-        }
-
-        function guardarEdicionGasto(nombre) {
-            const nuevoMonto = parseFloat(document.getElementById('nuevoMontoGasto').value);
-            if (!isNaN(nuevoMonto) && nuevoMonto > 0) {
-                datos.gastosPorMes[mesActual][nombre].monto = nuevoMonto;
-                guardarDatos();
-                actualizarGastos();
-                cerrarModal();
-            }
-        }
-
-        function cambiarEstadoGasto(nombre) {
-            const gasto = datos.gastosPorMes[mesActual][nombre];
-            
-            if (gasto.estado === 'pendiente') {
-                // Cambiar a TRANSFERIDO o PAGADO
-                mostrarModal(`
-                    <div class="form-group">
-                        <label>¿Qué acción deseas realizar?</label>
-                        <select id="accionGasto" onchange="mostrarCamposAccion()">
-                            <option value="transferir">TRANSFERIR DINERO</option>
-                            <option value="pagar">PAGAR COMPLETO</option>
-                        </select>
-                    </div>
-                    <div id="camposTransferencia" style="display: block;">
-                        <div class="form-group">
-                            <label>Monto a transferir:</label>
-                            <input type="number" id="montoTransferir" step="0.01" max="${gasto.monto}" value="${gasto.monto}">
-                        </div>
-                        <div class="form-group">
-                            <label>Cuenta de origen:</label>
-                            <select id="cuentaOrigen">
-                                ${Object.keys(datos.cuentas).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Cuenta de destino:</label>
-                            <select id="cuentaDestino">
-                                ${Object.keys(datos.cuentas).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div id="camposPago" style="display: none;">
-                        <div class="form-group">
-                            <label>Cuenta de pago:</label>
-                            <select id="cuentaPago">
-                                ${Object.keys(datos.cuentas).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="btn btn-primary" onclick="confirmarCambioEstado('${nombre}')">CONFIRMAR</button>
-                        <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                    </div>
-                `, `Gasto: ${nombre}`);
-            } else if (gasto.estado === 'transferido') {
-                // Cambiar a PAGADO o revertir transferencia - CON MONTO EDITABLE
-                const saldoRestante = gasto.monto - gasto.montoTransferido;
-                mostrarModal(`
-                    <div class="form-group">
-                        <label>¿Qué acción deseas realizar?</label>
-                        <select id="accionGasto" onchange="mostrarCamposAccionTransferido()">
-                            <option value="pagar">PAGAR SALDO RESTANTE</option>
-                            <option value="revertir">REVERTIR TRANSFERENCIA</option>
-                            <option value="transferir">TRANSFERIR MÁS</option>
-                        </select>
-                    </div>
-                    <div id="camposPagoTransferido">
-                        <div class="form-group">
-                            <label>Monto a pagar (máximo: $${saldoRestante.toFixed(2)}):</label>
-                            <input type="number" id="montoPagar" step="0.01" max="${saldoRestante}" value="${saldoRestante}">
-                        </div>
-                        <div class="form-group">
-                            <label>Cuenta de pago:</label>
-                            <select id="cuentaPagoTransferido">
-                                ${Object.keys(datos.cuentas).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div id="camposRevertir" style="display: none;">
-                        <p style="color: #B22222; font-weight: bold;">¿Revertir transferencia de $${gasto.montoTransferido.toFixed(2)}?</p>
-                    </div>
-                    <div id="camposTransferirMas" style="display: none;">
-                        <div class="form-group">
-                            <label>Monto adicional a transferir (máximo: $${saldoRestante.toFixed(2)}):</label>
-                            <input type="number" id="montoAdicional" step="0.01" max="${saldoRestante}" value="${saldoRestante}">
-                        </div>
-                        <div class="form-group">
-                            <label>Cuenta de origen:</label>
-                            <select id="cuentaOrigenAdicional">
-                                ${Object.keys(datos.cuentas).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Cuenta de destino:</label>
-                            <select id="cuentaDestinoAdicional">
-                                <option value="${gasto.cuentaDestino}">${gasto.cuentaDestino} (actual)</option>
-                                ${Object.keys(datos.cuentas).filter(c => c !== gasto.cuentaDestino).map(cuenta => 
-                                    `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                                ).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="btn btn-primary" onclick="confirmarCambioEstado('${nombre}')">CONFIRMAR</button>
-                        <button class="btn btn-danger" onclick="cerrarModal()">CANCELAR</button>
-                    </div>
-                `, `Gasto: ${nombre}`);
-            } else if (gasto.estado === 'pagado') {
-                // Revertir a pendiente
-                if (confirm(`¿Revertir pago y devolver $${gasto.monto.toFixed(2)}?`)) {
-                    if (gasto.cuentaPago && datos.cuentas[gasto.cuentaPago] !== undefined) {
-                        datos.cuentas[gasto.cuentaPago] += gasto.monto;
-                    }
-                    gasto.estado = 'pendiente';
-                    gasto.montoTransferido = 0;
-                    gasto.cuentaPago = null;
-                    guardarDatos();
-                    actualizarCuentas();
-                    actualizarGastos();
-                }
-            }
-        }
-
-        function mostrarCamposAccion() {
-            const accion = document.getElementById('accionGasto').value;
-            document.getElementById('camposTransferencia').style.display = accion === 'transferir' ? 'block' : 'none';
-            document.getElementById('camposPago').style.display = accion === 'pagar' ? 'block' : 'none';
-        }
-
-        function mostrarCamposAccionTransferido() {
-            const accion = document.getElementById('accionGasto').value;
-            document.getElementById('camposPagoTransferido').style.display = accion === 'pagar' ? 'block' : 'none';
-            document.getElementById('camposRevertir').style.display = accion === 'revertir' ? 'block' : 'none';
-            document.getElementById('camposTransferirMas').style.display = accion === 'transferir' ? 'block' : 'none';
-        }
-
-        function confirmarCambioEstado(nombre) {
-            const gasto = datos.gastosPorMes[mesActual][nombre];
-            const accion = document.getElementById('accionGasto').value;
-
-            if (gasto.estado === 'pendiente') {
-                if (accion === 'transferir') {
-                    const montoTransferir = parseFloat(document.getElementById('montoTransferir').value) || 0;
-                    const cuentaOrigen = document.getElementById('cuentaOrigen').value;
-                    const cuentaDestino = document.getElementById('cuentaDestino').value;
-
-                    if (montoTransferir <= 0 || montoTransferir > gasto.monto) {
-                        alert('Monto de transferencia inválido');
-                        return;
-                    }
-
-                    if (cuentaOrigen === cuentaDestino) {
-                        alert('Las cuentas de origen y destino deben ser diferentes');
-                        return;
-                    }
-
-                    if (datos.cuentas[cuentaOrigen] < montoTransferir) {
-                        alert('Saldo insuficiente en cuenta de origen');
-                        return;
-                    }
-
-                    // Realizar transferencia
-                    datos.cuentas[cuentaOrigen] -= montoTransferir;
-                    datos.cuentas[cuentaDestino] += montoTransferir;
-
-                    // Actualizar estado del gasto
-                    gasto.estado = 'transferido';
-                    gasto.montoTransferido = montoTransferir;
-                    gasto.cuentaOrigen = cuentaOrigen;
-                    gasto.cuentaDestino = cuentaDestino;
-
-                    // Registrar en historial
-                    const fecha = new Date().toLocaleString('es-PA');
-                    datos.debitos.unshift({ 
-                        fecha, 
-                        cuenta: cuentaOrigen,
-                        descripcion: `TRANSFERENCIA para ${nombre}: ${cuentaOrigen} → ${cuentaDestino}`, 
-                        monto: montoTransferir,
-                        tipo: 'transferencia'
-                    });
-
-                } else if (accion === 'pagar') {
-                    const cuentaPago = document.getElementById('cuentaPago').value;
-
-                    if (datos.cuentas[cuentaPago] < gasto.monto) {
-                        alert('Saldo insuficiente');
-                        return;
-                    }
-
-                    // Realizar pago completo
-                    datos.cuentas[cuentaPago] -= gasto.monto;
-                    gasto.estado = 'pagado';
-                    gasto.cuentaPago = cuentaPago;
-
-                    // Registrar en historial
-                    const fecha = new Date().toLocaleString('es-PA');
-                    datos.debitos.unshift({ 
-                        fecha, 
-                        cuenta: cuentaPago,
-                        descripcion: `PAGO: ${nombre}`, 
-                        monto: gasto.monto,
-                        tipo: 'pago'
-                    });
-                }
-            } else if (gasto.estado === 'transferido') {
-                if (accion === 'pagar') {
-                    const montoPagar = parseFloat(document.getElementById('montoPagar').value) || 0;
-                    const cuentaPago = document.getElementById('cuentaPagoTransferido').value;
-                    const saldoRestante = gasto.monto - gasto.montoTransferido;
-
-                    if (montoPagar <= 0 || montoPagar > saldoRestante) {
-                        alert('Monto a pagar inválido');
-                        return;
-                    }
-
-                    if (datos.cuentas[cuentaPago] < montoPagar) {
-                        alert('Saldo insuficiente para pagar');
-                        return;
-                    }
-
-                    // Pagar saldo (parcial o completo)
-                    datos.cuentas[cuentaPago] -= montoPagar;
-                    
-                    if (montoPagar === saldoRestante) {
-                        // Pago completo
-                        gasto.estado = 'pagado';
-                        gasto.cuentaPago = cuentaPago;
-                    } else {
-                        // Pago parcial - actualizar monto transferido
-                        gasto.montoTransferido += montoPagar;
-                    }
-
-                    // Registrar en historial
-                    const fecha = new Date().toLocaleString('es-PA');
-                    datos.debitos.unshift({ 
-                        fecha, 
-                        cuenta: cuentaPago,
-                        descripcion: `PAGO PARCIAL: ${nombre} ($${montoPagar.toFixed(2)})`, 
-                        monto: montoPagar,
-                        tipo: 'pago'
-                    });
-
-                } else if (accion === 'revertir') {
-                    // Revertir transferencia
-                    if (gasto.cuentaOrigen && gasto.cuentaDestino) {
-                        datos.cuentas[gasto.cuentaOrigen] += gasto.montoTransferido;
-                        datos.cuentas[gasto.cuentaDestino] -= gasto.montoTransferido;
-                    }
-                    gasto.estado = 'pendiente';
-                    gasto.montoTransferido = 0;
-                    gasto.cuentaOrigen = null;
-                    gasto.cuentaDestino = null;
-                } else if (accion === 'transferir') {
-                    const montoAdicional = parseFloat(document.getElementById('montoAdicional').value) || 0;
-                    const cuentaOrigen = document.getElementById('cuentaOrigenAdicional').value;
-                    const cuentaDestino = document.getElementById('cuentaDestinoAdicional').value;
-                    const saldoRestante = gasto.monto - gasto.montoTransferido;
-
-                    if (montoAdicional <= 0 || montoAdicional > saldoRestante) {
-                        alert('Monto adicional inválido');
-                        return;
-                    }
-
-                    if (datos.cuentas[cuentaOrigen] < montoAdicional) {
-                        alert('Saldo insuficiente en cuenta de origen');
-                        return;
-                    }
-
-                    // Realizar transferencia adicional
-                    datos.cuentas[cuentaOrigen] -= montoAdicional;
-                    datos.cuentas[cuentaDestino] += montoAdicional;
-
-                    // Actualizar estado del gasto
-                    gasto.montoTransferido += montoAdicional;
-                    
-                    // Si se completa el monto total, cambiar a pagado
-                    if (gasto.montoTransferido >= gasto.monto) {
-                        gasto.estado = 'pagado';
-                        gasto.cuentaPago = cuentaDestino;
-                    }
-
-                    // Registrar en historial
-                    const fecha = new Date().toLocaleString('es-PA');
-                    datos.debitos.unshift({ 
-                        fecha, 
-                        cuenta: cuentaOrigen,
-                        descripcion: `TRANSFERENCIA ADICIONAL para ${nombre}: ${cuentaOrigen} → ${cuentaDestino}`, 
-                        monto: montoAdicional,
-                        tipo: 'transferencia'
-                    });
-                }
-            }
-
-            guardarDatos();
-            actualizarCuentas();
-            actualizarGastos();
-            actualizarDebitos();
-            cerrarModal();
-        }
-
-        function eliminarGasto(nombre) {
-            if (confirm(`¿Eliminar gasto ${nombre}?`)) {
-                delete datos.gastosPorMes[mesActual][nombre];
-                guardarDatos();
-                actualizarGastos();
-            }
-        }
-
-        function resetearMes() {
-            if (confirm('¿Resetear todos los gastos a PENDIENTE?')) {
-                const gastosMes = datos.gastosPorMes[mesActual] || {};
-                let dineroDevuelto = 0;
+                this.productHistory = {};
                 
-                Object.keys(gastosMes).forEach(nombre => {
-                    const gasto = gastosMes[nombre];
-                    if (gasto.estado === 'pagado' && gasto.cuentaPago && datos.cuentas[gasto.cuentaPago] !== undefined) {
-                        datos.cuentas[gasto.cuentaPago] += gasto.monto;
-                        dineroDevuelto += gasto.monto;
-                    } else if (gasto.estado === 'transferido' && gasto.cuentaOrigen && gasto.cuentaDestino) {
-                        datos.cuentas[gasto.cuentaOrigen] += gasto.montoTransferido;
-                        datos.cuentas[gasto.cuentaDestino] -= gasto.montoTransferido;
-                        dineroDevuelto += gasto.montoTransferido;
-                    }
-                    gasto.estado = 'pendiente';
-                    gasto.montoTransferido = 0;
-                    gasto.cuentaOrigen = null;
-                    gasto.cuentaDestino = null;
-                    gasto.cuentaPago = null;
+                this.loadSettings();
+                this.loadProductHistory();
+                this.initializeElements();
+                this.bindEvents();
+                this.updateDisplay();
+            }
+
+            loadSettings() {
+                const savedSettings = localStorage.getItem('shoppingSettings');
+                if (savedSettings) {
+                    this.settings = {...this.settings, ...JSON.parse(savedSettings)};
+                }
+                document.getElementById('currencyBtn').innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
+                document.getElementById('tax').value = this.settings.defaultTax;
+            }
+
+            loadProductHistory() {
+                const savedHistory = localStorage.getItem('productHistory');
+                if (savedHistory) {
+                    this.productHistory = JSON.parse(savedHistory);
+                console.log('Historial cargado:', this.productHistory);
+                this.updateAutocomplete();
+                this.showNotification('Historial de productos cargado', 'success');
+                console.log('Productos en historial:', Object.keys(this.productHistory));
+                console.log('Ejemplo de producto:', this.productHistory['soda']);
+                console.log('Ejemplo de producto:', this.productHistory['leche']);
+                console.log('Ejemplo de producto:', this.productHistory['pan']);
+            } else {
+                console.log('No hay historial guardado');
+            }
+            }
+
+            saveSettings() {
+                localStorage.setItem('shoppingSettings', JSON.stringify(this.settings));
+            }
+
+            saveProductHistory() {
+                localStorage.setItem('productHistory', JSON.stringify(this.productHistory));
+                console.log('Historial guardado:', this.productHistory);
+            }
+
+            initializeElements() {
+                // Input elements
+                this.itemNameInput = document.getElementById('itemName');
+                this.itemPriceInput = document.getElementById('itemPrice');
+                this.quantityInput = document.getElementById('quantity');
+                this.taxInput = document.getElementById('tax');
+                this.autocompleteList = document.getElementById('autocompleteList');
+                
+                // Display elements
+                this.itemsList = document.getElementById('itemsList');
+                this.subTotalDisplay = document.getElementById('subTotal');
+                this.itemTaxesDisplay = document.getElementById('itemTaxes');
+                this.totalAmountDisplay = document.getElementById('totalAmount');
+                
+                // Button elements
+                this.addItemBtn = document.getElementById('addItemBtn');
+                this.deleteBtn = document.getElementById('deleteBtn');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.saveBtn = document.getElementById('saveBtn');
+                this.undoBtn = document.getElementById('undoBtn');
+                this.clearBtn = document.getElementById('clearBtn');
+                this.newListBtn = document.getElementById('newListBtn');
+                this.exportBtn = document.getElementById('exportBtn');
+                this.currencyBtn = document.getElementById('currencyBtn');
+                this.settingsBtn = document.getElementById('settingsBtn');
+                this.helpBtn = document.getElementById('helpBtn');
+
+                // Modal elements
+                this.settingsModal = document.getElementById('settingsModal');
+                this.closeSettings = document.getElementById('closeSettings');
+                this.currencySelect = document.getElementById('currencySelect');
+                this.defaultTaxInput = document.getElementById('defaultTax');
+                this.saveSettingsBtn = document.getElementById('saveSettings');
+            }
+
+            bindEvents() {
+                // Add item button
+                this.addItemBtn.addEventListener('click', () => this.addItem());
+                
+                // Navigation buttons
+                this.deleteBtn.addEventListener('click', () => this.deleteCurrentItem());
+                this.prevBtn.addEventListener('click', () => this.navigateItems(-1));
+                this.nextBtn.addEventListener('click', () => this.navigateItems(1));
+                
+                // Action buttons
+                this.saveBtn.addEventListener('click', () => this.saveCurrentList());
+                this.undoBtn.addEventListener('click', () => this.undoLastAction());
+                this.clearBtn.addEventListener('click', () => this.clearAll());
+                
+                // Bottom action bar
+                this.newListBtn.addEventListener('click', () => this.newList());
+                this.exportBtn.addEventListener('click', () => this.exportList());
+                this.currencyBtn.addEventListener('click', () => this.showCurrencyModal());
+                this.settingsBtn.addEventListener('click', () => this.showSettings());
+                this.helpBtn.addEventListener('click', () => this.showHelp());
+                
+                // Modal events
+                this.closeSettings.addEventListener('click', () => this.hideSettings());
+                this.saveSettingsBtn.addEventListener('click', () => this.saveNewSettings());
+                
+                // Enter key to add item
+                this.itemNameInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addItem();
                 });
                 
-                guardarDatos();
-                actualizarCuentas();
-                actualizarGastos();
+                this.itemPriceInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addItem();
+                });
+
+                // Autocomplete events
+                this.itemNameInput.addEventListener('input', () => this.updateAutocomplete());
+                this.itemNameInput.addEventListener('focus', () => this.updateAutocomplete());
+
+                // Cerrar modal al hacer clic fuera
+                this.settingsModal.addEventListener('click', (e) => {
+                    if (e.target === this.settingsModal) this.hideSettings();
+                });
+
+                // Guardar productos cuando se cierra la página
+                window.addEventListener('beforeunload', () => {
+                    this.saveProductHistory();
+                });
+            }
+
+            updateAutocomplete() {
+                const query = this.itemNameInput.value.toLowerCase().trim();
+                this.autocompleteList.innerHTML = '';
                 
-                if (dineroDevuelto > 0) {
-                    alert(`Se devolvió $${dineroDevuelto.toFixed(2)} a las cuentas`);
+                if (query.length < 2) {
+                    this.autocompleteList.style.display = 'none';
+                    return;
                 }
+                
+                const matches = Object.keys(this.productHistory)
+                    .filter(name => name.toLowerCase().includes(query))
+                    .slice(0, 5);
+                
+                if (matches.length === 0) {
+                    this.autocompleteList.style.display = 'none';
+                    return;
+                }
+                
+                matches.forEach(productName => {
+                    const product = this.productHistory[productName];
+                    const item = document.createElement('div');
+                    item.className = 'autocomplete-item';
+                    item.innerHTML = `
+                        <span class="autocomplete-name">${productName}</span>
+                        <span class="autocomplete-price">${this.formatCurrency(product.lastPrice)}</span>
+                    `;
+                    item.addEventListener('click', () => {
+                        this.itemNameInput.value = productName;
+                        this.itemPriceInput.value = product.lastPrice;
+                        this.taxInput.value = product.lastTax || 0;
+                        this.autocompleteList.style.display = 'none';
+                        this.itemPriceInput.focus();
+                    });
+                    this.autocompleteList.appendChild(item);
+                });
+                
+                this.autocompleteList.style.display = 'block';
             }
-        }
 
-        // MOVIMIENTOS - FUNCIONES CORREGIDAS CON FECHA MODIFICABLE
-        function registrarDebito() {
-            if (Object.keys(datos.cuentas).length === 0) {
-                alert('Primero agrega una cuenta');
-                return;
-            }
+            addItem() {
+                const name = this.itemNameInput.value.trim();
+                const price = parseFloat(this.itemPriceInput.value) || 0;
+                const quantity = parseInt(this.quantityInput.value) || 1;
+                const tax = parseFloat(this.taxInput.value) || 0;
 
-            let html = '<div class="form-group"><label>Cuenta:</label><select id="cuentaDebito">';
-            Object.keys(datos.cuentas).forEach(nombre => {
-                html += `<option value="${nombre}">${nombre} - $${datos.cuentas[nombre].toFixed(2)}</option>`;
-            });
-            html += `</select></div>
-                <div class="form-group">
-                    <label>Descripción:</label>
-                    <input type="text" id="descripcionDebito" placeholder="Ej: Compra supermercado">
-                </div>
-                <div class="form-group">
-                    <label>Monto:</label>
-                    <input type="number" id="montoDebito" step="0.01" placeholder="0.00">
-                </div>
-                <!-- NUEVO: Campo de fecha para débito -->
-                <div class="form-group">
-                    <label>Fecha y Hora:</label>
-                    <input type="datetime-local" id="fechaDebito" value="${new Date().toISOString().slice(0, 16)}">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-danger" onclick="guardarDebito()">REGISTRAR GASTO</button>
-                    <button class="btn btn-secondary" onclick="cerrarModal()">CANCELAR</button>
-                </div>`;
-            
-            mostrarModal(html, 'Registrar Gasto');
-        }
-
-        function guardarDebito() {
-            const cuenta = document.getElementById('cuentaDebito').value;
-            const descripcion = document.getElementById('descripcionDebito').value.trim();
-            const monto = parseFloat(document.getElementById('montoDebito').value) || 0;
-            // NUEVO: Obtener fecha personalizada
-            const fechaInput = document.getElementById('fechaDebito').value;
-            const fecha = fechaInput ? new Date(fechaInput).toLocaleString('es-PA') : new Date().toLocaleString('es-PA');
-
-            if (descripcion && monto > 0) {
-                if (datos.cuentas[cuenta] < monto) {
-                    alert('Saldo insuficiente en la cuenta seleccionada');
+                if (!name) {
+                    this.showError('Por favor ingresa el nombre del producto');
+                    this.itemNameInput.focus();
                     return;
                 }
 
-                datos.debitos.unshift({ 
-                    fecha, 
-                    cuenta, 
-                    descripcion, 
-                    monto,
-                    tipo: 'debito'
-                });
-                datos.cuentas[cuenta] -= monto;
-                
-                guardarDatos();
-                actualizarCuentas();
-                actualizarDebitos();
-                cerrarModal();
-            } else {
-                alert('Completa todos los campos');
-            }
-        }
-
-        function registrarIngreso() {
-            if (Object.keys(datos.cuentas).length === 0) {
-                alert('Primero agrega una cuenta');
-                return;
-            }
-
-            let html = '<div class="form-group"><label>Cuenta:</label><select id="cuentaIngreso">';
-            Object.keys(datos.cuentas).forEach(nombre => {
-                html += `<option value="${nombre}">${nombre} - $${datos.cuentas[nombre].toFixed(2)}</option>`;
-            });
-            html += `</select></div>
-                <div class="form-group">
-                    <label>Descripción:</label>
-                    <input type="text" id="descripcionIngreso" placeholder="Ej: Salario, Venta, etc.">
-                </div>
-                <div class="form-group">
-                    <label>Monto:</label>
-                    <input type="number" id="montoIngreso" step="0.01" placeholder="0.00">
-                </div>
-                <!-- NUEVO: Campo de fecha para ingreso -->
-                <div class="form-group">
-                    <label>Fecha y Hora:</label>
-                    <input type="datetime-local" id="fechaIngreso" value="${new Date().toISOString().slice(0, 16)}">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="guardarIngreso()">REGISTRAR INGRESO</button>
-                    <button class="btn btn-secondary" onclick="cerrarModal()">CANCELAR</button>
-                </div>`;
-            
-            mostrarModal(html, 'Registrar Ingreso');
-        }
-
-        function guardarIngreso() {
-            const cuenta = document.getElementById('cuentaIngreso').value;
-            const descripcion = document.getElementById('descripcionIngreso').value.trim();
-            const monto = parseFloat(document.getElementById('montoIngreso').value) || 0;
-            // NUEVO: Obtener fecha personalizada
-            const fechaInput = document.getElementById('fechaIngreso').value;
-            const fecha = fechaInput ? new Date(fechaInput).toLocaleString('es-PA') : new Date().toLocaleString('es-PA');
-
-            if (descripcion && monto > 0) {
-                datos.debitos.unshift({ 
-                    fecha, 
-                    cuenta, 
-                    descripcion, 
-                    monto,
-                    tipo: 'ingreso'
-                });
-                datos.cuentas[cuenta] += monto;
-                
-                guardarDatos();
-                actualizarCuentas();
-                actualizarDebitos();
-                cerrarModal();
-            } else {
-                alert('Completa todos los campos');
-            }
-        }
-
-        function registrarTransferencia() {
-            if (Object.keys(datos.cuentas).length < 2) {
-                alert('Necesitas al menos 2 cuentas para hacer transferencias');
-                return;
-            }
-
-            let html = '<div class="form-group"><label>Cuenta de origen:</label><select id="cuentaOrigenTransferencia">';
-            Object.keys(datos.cuentas).forEach(nombre => {
-                html += `<option value="${nombre}">${nombre} - $${datos.cuentas[nombre].toFixed(2)}</option>`;
-            });
-            html += `</select></div>
-                <div class="form-group">
-                    <label>Cuenta de destino:</label>
-                    <select id="cuentaDestinoTransferencia">
-                        ${Object.keys(datos.cuentas).map(cuenta => 
-                            `<option value="${cuenta}">${cuenta} - $${datos.cuentas[cuenta].toFixed(2)}</option>`
-                        ).join('')}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Descripción:</label>
-                    <input type="text" id="descripcionTransferencia" placeholder="Ej: Transferencia entre cuentas">
-                </div>
-                <div class="form-group">
-                    <label>Monto:</label>
-                    <input type="number" id="montoTransferencia" step="0.01" placeholder="0.00">
-                </div>
-                <!-- NUEVO: Campo de fecha para transferencia -->
-                <div class="form-group">
-                    <label>Fecha y Hora:</label>
-                    <input type="datetime-local" id="fechaTransferencia" value="${new Date().toISOString().slice(0, 16)}">
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-transfer" onclick="guardarTransferencia()">REALIZAR TRANSFERENCIA</button>
-                    <button class="btn btn-secondary" onclick="cerrarModal()">CANCELAR</button>
-                </div>`;
-            
-            mostrarModal(html, 'Transferencia entre Cuentas');
-        }
-
-        function guardarTransferencia() {
-            const cuentaOrigen = document.getElementById('cuentaOrigenTransferencia').value;
-            const cuentaDestino = document.getElementById('cuentaDestinoTransferencia').value;
-            const descripcion = document.getElementById('descripcionTransferencia').value.trim();
-            const monto = parseFloat(document.getElementById('montoTransferencia').value) || 0;
-            // NUEVO: Obtener fecha personalizada
-            const fechaInput = document.getElementById('fechaTransferencia').value;
-            const fecha = fechaInput ? new Date(fechaInput).toLocaleString('es-PA') : new Date().toLocaleString('es-PA');
-
-            if (cuentaOrigen === cuentaDestino) {
-                alert('Las cuentas de origen y destino deben ser diferentes');
-                return;
-            }
-
-            if (descripcion && monto > 0) {
-                if (datos.cuentas[cuentaOrigen] < monto) {
-                    alert('Saldo insuficiente en la cuenta de origen');
+                if (price <= 0) {
+                    this.showError('Por favor ingresa un precio válido');
+                    this.itemPriceInput.focus();
                     return;
                 }
 
-                datos.debitos.unshift({ 
-                    fecha, 
-                    cuenta: cuentaOrigen,
-                    descripcion: `TRANSFERENCIA: ${descripcion} (${cuentaOrigen} → ${cuentaDestino})`, 
-                    monto,
-                    tipo: 'transferencia'
-                });
-                datos.cuentas[cuentaOrigen] -= monto;
-                datos.cuentas[cuentaDestino] += monto;
+                // Save to undo stack
+                this.saveToUndoStack();
+
+                // Calculate item totals
+                const subtotal = price * quantity;
+                const taxAmount = subtotal * (tax / 100);
+                const total = subtotal + taxAmount;
+
+                const item = {
+                    id: Date.now(),
+                    name,
+                    price,
+                    quantity,
+                    tax,
+                    subtotal,
+                    taxAmount,
+                    total,
+                    timestamp: new Date()
+                };
+
+                this.items.push(item);
+                this.currentItemIndex = this.items.length - 1;
+
+                // Save to product history
+                this.saveToProductHistory(name, price, tax);
+
+                // Clear inputs
+                this.clearInputs();
+
+                // Update display
+                this.updateDisplay();
+                this.showSuccess('Producto agregado correctamente');
+            }
+
+            saveToProductHistory(productName, price, tax) {
+                // Guardar en el historial de productos
+                this.productHistory[productName] = {
+                    lastPrice: price,
+                    lastTax: tax,
+                    lastUsed: new Date().toISOString(),
+                    timesUsed: (this.productHistory[productName]?.timesUsed || 0) + 1
+                };
                 
-                guardarDatos();
-                actualizarCuentas();
-                actualizarDebitos();
-                cerrarModal();
-            } else {
-                alert('Completa todos los campos');
-            }
-        }
-
-        function actualizarDebitos() {
-            const list = document.getElementById('debitosList');
-            if (!list) return;
-
-            list.innerHTML = '';
-
-            if (datos.debitos.length === 0) {
-                list.innerHTML = '<p style="color: #666; text-align: center;">No hay movimientos registrados</p>';
-                return;
+                this.saveProductHistory();
+                console.log('Producto guardado en historial:', productName, price, tax);
             }
 
-            datos.debitos.forEach(debito => {
-                const item = document.createElement('div');
-                item.className = `debito-item ${debito.tipo === 'pago' ? 'pago' : ''} ${debito.tipo === 'ingreso' ? 'ingreso' : ''} ${debito.tipo === 'transferencia' ? 'transferencia' : ''}`;
-                item.innerHTML = `
-                    <div class="debito-info">
-                        <div class="debito-fecha">${debito.fecha} - ${debito.cuenta}</div>
-                        <div class="debito-descripcion">${debito.descripcion}</div>
-                    </div>
-                    <div class="debito-monto ${debito.tipo === 'pago' ? 'pago' : ''} ${debito.tipo === 'ingreso' ? 'ingreso' : ''} ${debito.tipo === 'transferencia' ? 'transferencia' : ''}">
-                        ${debito.tipo === 'ingreso' ? '+' : '-'}$${debito.monto.toFixed(2)}
-                    </div>
+            deleteCurrentItem() {
+                if (this.currentItemIndex >= 0 && this.currentItemIndex < this.items.length) {
+                    this.saveToUndoStack();
+                    const itemName = this.items[this.currentItemIndex].name;
+                    this.items.splice(this.currentItemIndex, 1);
+                    
+                    if (this.currentItemIndex >= this.items.length) {
+                        this.currentItemIndex = this.items.length - 1;
+                    }
+                    
+                    this.updateDisplay();
+                    this.showSuccess(`"${itemName}" eliminado`);
+                } else {
+                    this.showError('No hay producto seleccionado para eliminar');
+                }
+            }
+
+            navigateItems(direction) {
+                if (this.items.length === 0) return;
+
+                this.currentItemIndex += direction;
+                
+                if (this.currentItemIndex < 0) {
+                    this.currentItemIndex = this.items.length - 1;
+                } else if (this.currentItemIndex >= this.items.length) {
+                    this.currentItemIndex = 0;
+                }
+
+                this.loadCurrentItem();
+                this.updateDisplay();
+            }
+
+            loadCurrentItem() {
+                if (this.currentItemIndex >= 0 && this.currentItemIndex < this.items.length) {
+                    const item = this.items[this.currentItemIndex];
+                    this.itemNameInput.value = item.name;
+                    this.itemPriceInput.value = item.price;
+                    this.quantityInput.value = item.quantity;
+                    this.taxInput.value = item.tax;
+                }
+            }
+
+            clearInputs() {
+                this.itemNameInput.value = '';
+                this.itemPriceInput.value = '';
+                this.quantityInput.value = '1';
+                this.taxInput.value = this.settings.defaultTax;
+                this.autocompleteList.style.display = 'none';
+                this.itemNameInput.focus();
+            }
+
+            updateDisplay() {
+                this.updateItemsList();
+                this.updateSummary();
+            }
+
+            updateItemsList() {
+                this.itemsList.innerHTML = '';
+
+                if (this.items.length === 0) {
+                    this.itemsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>No hay productos en la lista</p>
+                        </div>`;
+                    return;
+                }
+
+                this.items.forEach((item, index) => {
+                    const itemRow = document.createElement('div');
+                    itemRow.className = 'item-row fade-in';
+                    if (index === this.currentItemIndex) {
+                        itemRow.style.background = 'rgba(0, 212, 255, 0.1)';
+                        itemRow.style.border = '1px solid rgba(0, 212, 255, 0.3)';
+                    }
+
+                    const productHistory = this.productHistory[item.name];
+                    const lastPrice = productHistory ? productHistory.lastPrice : null;
+                    const priceChange = lastPrice ? item.price - lastPrice : 0;
+
+                    itemRow.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-info">
+                                <span><i class="fas fa-tag"></i> ${this.formatCurrency(item.price)}</span>
+                                <span><i class="fas fa-layer-group"></i> ${item.quantity}</span>
+                                ${item.tax > 0 ? `<span><i class="fas fa-percentage"></i> ${item.tax}%</span>` : ''}
+                            </div>
+                            ${productHistory && priceChange !== 0 ? `
+                                <div class="price-history">
+                                    <i class="fas fa-${priceChange > 0 ? 'arrow-up' : 'arrow-down'}"></i>
+                                    ${this.formatCurrency(Math.abs(priceChange))} 
+                                    vs última compra
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="item-price-container">
+                            <div class="item-price">${this.formatCurrency(item.total)}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="item-action-btn edit-btn" data-index="${index}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="item-action-btn delete-item-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    // Add event listeners for edit and delete buttons
+                    const editBtn = itemRow.querySelector('.edit-btn');
+                    const deleteBtn = itemRow.querySelector('.delete-item-btn');
+                    
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.editItem(index);
+                    });
+                    
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.deleteItem(index);
+                    });
+
+                    // Click on row to select item
+                    itemRow.addEventListener('click', () => {
+                        this.currentItemIndex = index;
+                        this.loadCurrentItem();
+                        this.updateDisplay();
+                    });
+
+                    this.itemsList.appendChild(itemRow);
+                });
+            }
+
+            editItem(index) {
+                if (index >= 0 && index < this.items.length) {
+                    const item = this.items[index];
+                    
+                    const newName = prompt('Editar nombre:', item.name);
+                    if (newName !== null) {
+                        const newPrice = parseFloat(prompt('Editar precio:', item.price));
+                        if (!isNaN(newPrice) && newPrice > 0) {
+                            const newQuantity = parseInt(prompt('Editar cantidad:', item.quantity));
+                            if (!isNaN(newQuantity) && newQuantity > 0) {
+                                const newTax = parseFloat(prompt('Editar ITBMS %:', item.tax));
+                                if (!isNaN(newTax) && newTax >= 0) {
+                                    // Save to undo stack
+                                    this.saveToUndoStack();
+                                    
+                                    // Update item
+                                    const oldName = item.name;
+                                    item.name = newName;
+                                    item.price = newPrice;
+                                    item.quantity = newQuantity;
+                                    item.tax = newTax;
+                                    
+                                    // Recalculate
+                                    item.subtotal = newPrice * newQuantity;
+                                    item.taxAmount = item.subtotal * (newTax / 100);
+                                    item.total = item.subtotal + item.taxAmount;
+                                    
+                                    // Update product history
+                                    this.saveToProductHistory(newName, newPrice, newTax);
+                                    
+                                    this.updateDisplay();
+                                    this.showSuccess('Producto actualizado');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            deleteItem(index) {
+                if (index >= 0 && index < this.items.length) {
+                    const itemName = this.items[index].name;
+                    if (confirm(`¿Eliminar "${itemName}" de la lista?`)) {
+                        this.saveToUndoStack();
+                        this.items.splice(index, 1);
+                        
+                        if (this.currentItemIndex >= index) {
+                            this.currentItemIndex = Math.max(0, this.currentItemIndex - 1);
+                        }
+                        
+                        this.updateDisplay();
+                        this.showSuccess(`"${itemName}" eliminado`);
+                    }
+                }
+            }
+
+            updateSummary() {
+                let subtotal = 0;
+                let totalTaxes = 0;
+                let grandTotal = 0;
+
+                this.items.forEach(item => {
+                    subtotal += item.subtotal;
+                    totalTaxes += item.taxAmount;
+                    grandTotal += item.total;
+                });
+
+                this.subTotalDisplay.textContent = this.formatCurrency(subtotal, false);
+                this.itemTaxesDisplay.textContent = this.formatCurrency(totalTaxes, false);
+                this.totalAmountDisplay.textContent = this.formatCurrency(grandTotal, false);
+            }
+
+            formatCurrency(amount, includeSymbol = true) {
+                const symbol = includeSymbol ? this.settings.currency : '';
+                return `${symbol}${amount.toFixed(2)}`;
+            }
+
+            // Undo functionality
+            saveToUndoStack() {
+                this.undoStack.push(JSON.parse(JSON.stringify(this.items)));
+
+                // Keep only last 10 undo states
+                if (this.undoStack.length > 10) {
+                    this.undoStack.shift();
+                }
+            }
+
+            undoLastAction() {
+                if (this.undoStack.length === 0) {
+                    this.showError('No hay acciones para deshacer');
+                    return;
+                }
+
+                const lastState = this.undoStack.pop();
+                this.items = lastState;
+                this.currentItemIndex = Math.min(this.currentItemIndex, this.items.length - 1);
+                
+                this.updateDisplay();
+                this.showSuccess('Acción deshecha');
+            }
+
+            saveCurrentList() {
+                if (this.items.length === 0) {
+                    this.showError('No hay productos para guardar');
+                    return;
+                }
+
+                const listData = {
+                    items: this.items,
+                    timestamp: new Date(),
+                    total: this.totalAmountDisplay.textContent
+                };
+                
+                localStorage.setItem('lastShoppingList', JSON.stringify(listData));
+                this.showSuccess('Lista guardada correctamente');
+            }
+
+            // Export functions
+            exportList() {
+                if (this.items.length === 0) {
+                    this.showError('No hay productos para exportar');
+                    return;
+                }
+
+                const exportType = prompt('¿Qué formato prefieres?\n1 - CSV (Excel)\n2 - Factura (Texto)');
+                
+                if (exportType === '1') {
+                    this.exportToCSV();
+                } else if (exportType === '2') {
+                    this.exportToReceipt();
+                }
+            }
+
+            exportToCSV() {
+                let csv = 'Producto,Cantidad,Precio Unitario,ITBMS %,Total\n';
+                
+                this.items.forEach(item => {
+                    csv += `"${item.name}",${item.quantity},${item.price},${item.tax},${item.total}\n`;
+                });
+                
+                csv += `,,,Sub Total,${this.subTotalDisplay.textContent}\n`;
+                csv += `,,,ITBMS,${this.itemTaxesDisplay.textContent}\n`;
+                csv += `,,,TOTAL,${this.totalAmountDisplay.textContent}\n`;
+                
+                this.downloadFile(csv, 'lista_supermercado.csv', 'text/csv');
+                this.showSuccess('Lista exportada a CSV');
+            }
+
+            exportToReceipt() {
+                const width = 42;
+                let receipt = '='.repeat(width) + '\n';
+                receipt += 'LISTA DE SUPERMERCADO'.padStart((width + 20) / 2) + '\n';
+                receipt += '='.repeat(width) + '\n\n';
+                
+                this.items.forEach((item, index) => {
+                    const line1 = `${index + 1}. ${item.name}`;
+                    receipt += line1.substring(0, width) + '\n';
+                    
+                    const details = `${item.quantity} x ${this.formatCurrency(item.price)}`;
+                    const total = this.formatCurrency(item.total);
+                    const line2 = details + total.padStart(width - details.length);
+                    receipt += line2 + '\n';
+                    
+                    if (item.tax > 0) {
+                        receipt += `  ITBMS ${item.tax}%` + '\n';
+                    }
+                    receipt += '\n';
+                });
+                
+                receipt += '-'.repeat(width) + '\n';
+                receipt += `Sub Total:${this.subTotalDisplay.textContent.padStart(width - 10)}` + '\n';
+                receipt += `ITBMS:${this.itemTaxesDisplay.textContent.padStart(width - 6)}` + '\n';
+                receipt += `TOTAL:${this.totalAmountDisplay.textContent.padStart(width - 6)}` + '\n';
+                receipt += '='.repeat(width) + '\n';
+                receipt += `Fecha: ${new Date().toLocaleDateString()}` + '\n';
+                receipt += '='.repeat(width) + '\n';
+                
+                this.downloadFile(receipt, 'factura.txt', 'text/plain');
+                this.showSuccess('Factura generada');
+            }
+
+            downloadFile(content, filename, mimeType) {
+                const blob = new Blob([content], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            // Settings functions
+            showSettings() {
+                this.currencySelect.value = this.settings.currency;
+                this.defaultTaxInput.value = this.settings.defaultTax;
+                this.settingsModal.style.display = 'flex';
+            }
+
+            hideSettings() {
+                this.settingsModal.style.display = 'none';
+            }
+
+            saveNewSettings() {
+                this.settings.currency = this.currencySelect.value;
+                this.settings.defaultTax = parseFloat(this.defaultTaxInput.value) || 0;
+                
+                this.saveSettings();
+                this.updateDisplay();
+                this.currencyBtn.innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
+                this.taxInput.value = this.settings.defaultTax;
+                
+                this.hideSettings();
+                this.showSuccess('Configuración guardada');
+            }
+
+            showCurrencyModal() {
+                this.showSettings();
+            }
+
+            // Utility functions
+            clearAll() {
+                if (this.items.length === 0) return;
+
+                if (confirm('¿Estás seguro de que quieres limpiar toda la lista?')) {
+                    this.saveToUndoStack();
+                    this.items = [];
+                    this.currentItemIndex = -1;
+                    this.clearInputs();
+                    this.updateDisplay();
+                    this.showSuccess('Lista limpiada');
+                }
+            }
+
+            newList() {
+                this.clearAll();
+            }
+
+            showHelp() {
+                const helpText = `
+AYUDA - SMART MARKET LIST
+
+FUNCIONES PRINCIPALES:
+• Agregar productos: Escribe nombre y precio, luego presiona +
+• Autocompletado: Al escribir, sugiere productos usados antes
+• Editar: Haz clic en ✏️ junto a un producto
+• Eliminar: Haz clic en 🗑️ junto a un producto
+• Navegar: Usa ‹ › para moverte entre productos
+• Guardar: 💾 guarda la lista actual
+• Deshacer: ↩️ deshace la última acción
+• Limpiar: 🧹 limpia toda la lista
+• Exportar: 📤 exporta a CSV o factura
+• Configuración: ⚙️ ajusta moneda e ITBMS
+
+¡La app recuerda precios anteriores de cada producto!
                 `;
-                list.appendChild(item);
-            });
-        }
+                alert(helpText);
+            }
 
-        // EXPORTACIÓN E IMPORTACIÓN
-        function exportarCSV() {
-            try {
-                let csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += "Tipo,Fecha,Cuenta,Descripción,Monto\n";
-                
-                datos.debitos.forEach(debito => {
-                    const tipo = debito.tipo === 'pago' ? 'PAGO' : 
-                                debito.tipo === 'ingreso' ? 'INGRESO' : 
-                                debito.tipo === 'transferencia' ? 'TRANSFERENCIA' : 'DÉBITO';
-                    csvContent += `"${tipo}","${debito.fecha}","${debito.cuenta}","${debito.descripcion}",${debito.monto.toFixed(2)}\n`;
+            showSuccess(message) {
+                this.showNotification(message, 'success');
+            }
+
+            showError(message) {
+                this.showNotification(message, 'error');
+            }
+
+            showNotification(message, type) {
+                const existingNotifications = document.querySelectorAll('.notification');
+                existingNotifications.forEach(notification => {
+                    notification.remove();
                 });
-                
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", `finanzas_${new Date().toISOString().split('T')[0]}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                alert('Datos exportados correctamente a CSV');
-            } catch (error) {
-                alert('Error al exportar los datos');
+
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                    <span>${message}</span>
+                `;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
             }
         }
 
-        function importarCSV() {
-            document.getElementById('csvFileInput').click();
-        }
-
-        document.getElementById('csvFileInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    alert('Función de importación CSV en desarrollo. Por ahora usa la función de exportación como respaldo.');
-                    event.target.value = '';
-                } catch (error) {
-                    alert('Error al importar el archivo CSV');
-                    event.target.value = '';
-                }
-            };
-            reader.readAsText(file);
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.shoppingCalculator = new ShoppingCalculator();
         });
-
-        function limpiarTodo() {
-            if (confirm('¿ELIMINAR TODOS LOS DATOS? Esta acción no se puede deshacer.')) {
-                if (confirm('¿Estás completamente seguro? Se borrarán TODAS las cuentas, gastos e historial.')) {
-                    datos = { cuentas: {}, gastosPorMes: {}, debitos: [] };
-                    localStorage.removeItem('finanzas_datos');
-                    iniciar();
-                    alert('Todos los datos han sido eliminados');
-                }
-            }
-        }
-
-        // FUNCIONES AUXILIARES
-        function mostrarModal(contenido, titulo) {
-            document.getElementById('modalTitle').textContent = titulo;
-            document.getElementById('modalBody').innerHTML = contenido;
-            document.getElementById('modal').style.display = 'block';
-        }
-
-        function cerrarModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        // INICIAR
-        window.addEventListener('load', iniciar);
     </script>
 </body>
 </html>
