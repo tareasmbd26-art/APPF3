@@ -205,6 +205,13 @@
             box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
         }
 
+        /* MODIFICACIONES PARA EL CAMPO DE CANTIDAD */
+        .quantity-input {
+            width: 80px; /* Más compacto para móviles */
+            padding: 12px 10px;
+            text-align: center;
+        }
+
         .add-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -220,6 +227,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0; /* Evita que se reduzca */
         }
 
         .add-btn:hover {
@@ -607,6 +615,12 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--surface-light);
         }
+					/* AJUSTE PARA LA VENTANA DE LA CALCULADORA */
+		.calculator-modal .modal-content {
+			width: auto; /* Hace que el ancho de la ventana se ajuste al de la calculadora */
+			max-height: none; /* Elimina el límite de altura */
+			overflow-y: visible; /* Asegura que no aparezca el scroll vertical */
+		}
 
         .modal-header {
             display: flex;
@@ -721,6 +735,119 @@
             .price-input {
                 flex: 1;
             }
+            
+            /* Ajuste específico para el control de cantidad en pantallas más grandes */
+            .control-group.quantity-group {
+                flex-wrap: nowrap;
+            }
+        }
+
+        /* NUEVOS ESTILOS PARA MEJORAR LA EXPERIENCIA EN MÓVILES */
+        @media (max-width: 479px) {
+            .control-group {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
+            .control-label {
+                min-width: 100px;
+                margin-bottom: 8px;
+            }
+            
+            .quantity-input {
+                width: 70px;
+                margin-right: 10px;
+            }
+            
+            .add-btn {
+                width: 50px;
+                flex-shrink: 0;
+            }
+            
+            .control-group.quantity-group {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+            }
+        }
+
+        /* ESTILOS PARA LA CALCULADORA */
+        .calculator-modal {
+            display: none;
+        }
+
+        .calculator {
+            background: var(--surface-light);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .calculator-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: 600;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 18px;
+            font-weight: 600;
+            height: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .calc-btn.operator {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+        }
+
+        .calc-btn.operator:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, var(--success), #00c853);
+            color: white;
+        }
+
+        .calc-btn.clear {
+            background: rgba(255, 82, 82, 0.2);
+            color: var(--error);
+        }
+
+        .calc-btn.clear:hover {
+            background: rgba(255, 82, 82, 0.3);
+        }
+
+        .calc-btn.zero {
+            grid-column: span 2;
         }
     </style>
 </head>
@@ -742,12 +869,12 @@
                 </div>
                 
                 <div class="controls-row">
-                    <div class="control-group">
+                    <div class="control-group quantity-group">
                         <label class="control-label">
                             <i class="fas fa-balance-scale label-icon"></i>
                             CANTIDAD
                         </label>
-                        <input type="number" id="quantity" value="1" class="control-input" min="1">
+                        <input type="number" id="quantity" value="1" class="control-input quantity-input" min="1">
                         <button class="add-btn" id="addItemBtn">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -822,6 +949,9 @@
                 <button class="bottom-btn" id="exportBtn">
                     <i class="fas fa-file-export"></i>
                 </button>
+                <button class="bottom-btn" id="calculatorBtn">
+                    <i class="fas fa-calculator"></i>
+                </button>
                 <button class="bottom-btn" id="currencyBtn">
                     <i class="fas fa-dollar-sign"></i>
                 </button>
@@ -835,7 +965,6 @@
         </main>
     </div>
 
-    <!-- Modal de Configuración -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -864,9 +993,50 @@
         </div>
     </div>
 
+    <div class="modal calculator-modal" id="calculatorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calculator"></i> Calculadora</h2>
+                <button class="modal-close" id="closeCalculator">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="calculator">
+                <div class="calculator-display" id="calcDisplay">0</div>
+                <div class="calculator-buttons">
+                    <button class="calc-btn clear" data-action="clear">C</button>
+                    <button class="calc-btn clear" data-action="clearEntry">CE</button>
+                    <button class="calc-btn operator" data-action="backspace">⌫</button>
+                    <button class="calc-btn operator" data-action="divide">/</button>
+                    
+                    <button class="calc-btn" data-number="7">7</button>
+                    <button class="calc-btn" data-number="8">8</button>
+                    <button class="calc-btn" data-number="9">9</button>
+                    <button class="calc-btn operator" data-action="multiply">×</button>
+                    
+                    <button class="calc-btn" data-number="4">4</button>
+                    <button class="calc-btn" data-number="5">5</button>
+                    <button class="calc-btn" data-number="6">6</button>
+                    <button class="calc-btn operator" data-action="subtract">-</button>
+                    
+                    <button class="calc-btn" data-number="1">1</button>
+                    <button class="calc-btn" data-number="2">2</button>
+                    <button class="calc-btn" data-number="3">3</button>
+                    <button class="calc-btn operator" data-action="add">+</button>
+                    
+                    <button class="calc-btn zero" data-number="0">0</button>
+                    <button class="calc-btn" data-action="decimal">.</button>
+                    <button class="calc-btn equals" data-action="calculate">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         class ShoppingCalculator {
             constructor() {
+                // ================== INICIO DE LA CORRECCIÓN ==================
+                // 1. Inicializar propiedades de estado primero
                 this.items = [];
                 this.currentItemIndex = -1;
                 this.undoStack = [];
@@ -876,11 +1046,16 @@
                 };
                 this.productHistory = {};
                 
+                // 2. Inicializar los elementos del DOM. ESTO DEBE OCURRIR ANTES que cualquier función que los use.
+                this.initializeElements();
+                
+                // 3. Ahora sí, cargar datos y vincular eventos
                 this.loadSettings();
                 this.loadProductHistory();
-                this.initializeElements();
+                this.loadSavedList();
                 this.bindEvents();
                 this.updateDisplay();
+                // =================== FIN DE LA CORRECCIÓN ====================
             }
 
             loadSettings() {
@@ -888,24 +1063,26 @@
                 if (savedSettings) {
                     this.settings = {...this.settings, ...JSON.parse(savedSettings)};
                 }
-                document.getElementById('currencyBtn').innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
-                document.getElementById('tax').value = this.settings.defaultTax;
+                // Estas líneas ahora funcionan porque this.taxInput y this.currencyBtn ya existen
+                this.currencyBtn.innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
+                this.taxInput.value = this.settings.defaultTax;
             }
 
             loadProductHistory() {
                 const savedHistory = localStorage.getItem('productHistory');
                 if (savedHistory) {
                     this.productHistory = JSON.parse(savedHistory);
-                console.log('Historial cargado:', this.productHistory);
-                this.updateAutocomplete();
-                this.showNotification('Historial de productos cargado', 'success');
-                console.log('Productos en historial:', Object.keys(this.productHistory));
-                console.log('Ejemplo de producto:', this.productHistory['soda']);
-                console.log('Ejemplo de producto:', this.productHistory['leche']);
-                console.log('Ejemplo de producto:', this.productHistory['pan']);
-            } else {
-                console.log('No hay historial guardado');
+                    this.updateAutocomplete(); // Ahora es seguro llamar a esta función
+                }
             }
+
+            loadSavedList() {
+                const savedList = localStorage.getItem('savedShoppingList');
+                if (savedList) {
+                    const listData = JSON.parse(savedList);
+                    this.items = listData.items || [];
+                    this.updateDisplay(); // Ahora es seguro llamar a esta función
+                }
             }
 
             saveSettings() {
@@ -914,7 +1091,14 @@
 
             saveProductHistory() {
                 localStorage.setItem('productHistory', JSON.stringify(this.productHistory));
-                console.log('Historial guardado:', this.productHistory);
+            }
+
+            saveList() {
+                const listData = {
+                    items: this.items,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('savedShoppingList', JSON.stringify(listData));
             }
 
             initializeElements() {
@@ -941,6 +1125,7 @@
                 this.clearBtn = document.getElementById('clearBtn');
                 this.newListBtn = document.getElementById('newListBtn');
                 this.exportBtn = document.getElementById('exportBtn');
+                this.calculatorBtn = document.getElementById('calculatorBtn');
                 this.currencyBtn = document.getElementById('currencyBtn');
                 this.settingsBtn = document.getElementById('settingsBtn');
                 this.helpBtn = document.getElementById('helpBtn');
@@ -951,6 +1136,19 @@
                 this.currencySelect = document.getElementById('currencySelect');
                 this.defaultTaxInput = document.getElementById('defaultTax');
                 this.saveSettingsBtn = document.getElementById('saveSettings');
+
+                // Calculator elements
+                this.calculatorModal = document.getElementById('calculatorModal');
+                this.closeCalculator = document.getElementById('closeCalculator');
+                this.calcDisplay = document.getElementById('calcDisplay');
+                
+                // Initialize calculator state
+                this.calculator = {
+                    displayValue: '0',
+                    firstOperand: null,
+                    waitingForSecondOperand: false,
+                    operator: null
+                };
             }
 
             bindEvents() {
@@ -970,6 +1168,7 @@
                 // Bottom action bar
                 this.newListBtn.addEventListener('click', () => this.newList());
                 this.exportBtn.addEventListener('click', () => this.exportList());
+                this.calculatorBtn.addEventListener('click', () => this.showCalculator());
                 this.currencyBtn.addEventListener('click', () => this.showCurrencyModal());
                 this.settingsBtn.addEventListener('click', () => this.showSettings());
                 this.helpBtn.addEventListener('click', () => this.showHelp());
@@ -977,6 +1176,10 @@
                 // Modal events
                 this.closeSettings.addEventListener('click', () => this.hideSettings());
                 this.saveSettingsBtn.addEventListener('click', () => this.saveNewSettings());
+                
+                // Calculator events
+                this.closeCalculator.addEventListener('click', () => this.hideCalculator());
+                this.bindCalculatorEvents();
                 
                 // Enter key to add item
                 this.itemNameInput.addEventListener('keypress', (e) => {
@@ -996,10 +1199,142 @@
                     if (e.target === this.settingsModal) this.hideSettings();
                 });
 
+                this.calculatorModal.addEventListener('click', (e) => {
+                    if (e.target === this.calculatorModal) this.hideCalculator();
+                });
+
                 // Guardar productos cuando se cierra la página
                 window.addEventListener('beforeunload', () => {
                     this.saveProductHistory();
+                    this.saveList();
                 });
+            }
+
+            bindCalculatorEvents() {
+                const calcButtons = document.querySelectorAll('.calc-btn');
+                calcButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const number = button.getAttribute('data-number');
+                        const action = button.getAttribute('data-action');
+                        
+                        if (number !== null) {
+                            this.inputNumber(number);
+                        } else if (action !== null) {
+                            this.inputAction(action);
+                        }
+                    });
+                });
+            }
+
+            // Calculator functionality
+            inputNumber(number) {
+                const { displayValue, waitingForSecondOperand } = this.calculator;
+
+                if (waitingForSecondOperand) {
+                    this.calculator.displayValue = number;
+                    this.calculator.waitingForSecondOperand = false;
+                } else {
+                    this.calculator.displayValue = displayValue === '0' ? number : displayValue + number;
+                }
+
+                this.updateCalculatorDisplay();
+            }
+
+            inputAction(action) {
+                switch (action) {
+                    case 'clear':
+                        this.calculator.displayValue = '0';
+                        this.calculator.firstOperand = null;
+                        this.calculator.waitingForSecondOperand = false;
+                        this.calculator.operator = null;
+                        break;
+                    case 'clearEntry':
+                        this.calculator.displayValue = '0';
+                        break;
+                    case 'backspace':
+                        if (this.calculator.displayValue.length > 1) {
+                            this.calculator.displayValue = this.calculator.displayValue.slice(0, -1);
+                        } else {
+                            this.calculator.displayValue = '0';
+                        }
+                        break;
+                    case 'decimal':
+                        if (this.calculator.waitingForSecondOperand) {
+                            this.calculator.displayValue = '0.';
+                            this.calculator.waitingForSecondOperand = false;
+                            return;
+                        }
+                        if (!this.calculator.displayValue.includes('.')) {
+                            this.calculator.displayValue += '.';
+                        }
+                        break;
+                    case 'add':
+                    case 'subtract':
+                    case 'multiply':
+                    case 'divide':
+                        this.handleOperator(action);
+                        break;
+                    case 'calculate':
+                        this.handleCalculation();
+                        break;
+                }
+                this.updateCalculatorDisplay();
+            }
+
+            handleOperator(nextOperator) {
+                const { firstOperand, displayValue, operator } = this.calculator;
+                const inputValue = parseFloat(displayValue);
+
+                if (operator && this.calculator.waitingForSecondOperand) {
+                    this.calculator.operator = nextOperator;
+                    return;
+                }
+
+                if (firstOperand === null) {
+                    this.calculator.firstOperand = inputValue;
+                } else if (operator) {
+                    const result = this.performCalculation(operator, firstOperand, inputValue);
+                    this.calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+                    this.calculator.firstOperand = result;
+                }
+
+                this.calculator.waitingForSecondOperand = true;
+                this.calculator.operator = nextOperator;
+            }
+
+            handleCalculation() {
+                const { firstOperand, displayValue, operator } = this.calculator;
+                const inputValue = parseFloat(displayValue);
+
+                if (operator && firstOperand !== null) {
+                    const result = this.performCalculation(operator, firstOperand, inputValue);
+                    this.calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+                    this.calculator.firstOperand = null;
+                    this.calculator.waitingForSecondOperand = false;
+                    this.calculator.operator = null;
+                }
+            }
+
+            performCalculation(operator, firstOperand, secondOperand) {
+                switch (operator) {
+                    case 'add': return firstOperand + secondOperand;
+                    case 'subtract': return firstOperand - secondOperand;
+                    case 'multiply': return firstOperand * secondOperand;
+                    case 'divide': return firstOperand / secondOperand;
+                    default: return secondOperand;
+                }
+            }
+
+            updateCalculatorDisplay() {
+                this.calcDisplay.textContent = this.calculator.displayValue;
+            }
+
+            showCalculator() {
+                this.calculatorModal.style.display = 'flex';
+            }
+
+            hideCalculator() {
+                this.calculatorModal.style.display = 'none';
             }
 
             updateAutocomplete() {
@@ -1103,28 +1438,27 @@
                 };
                 
                 this.saveProductHistory();
-                console.log('Producto guardado en historial:', productName, price, tax);
+                this.updateAutocomplete();
             }
 
             deleteCurrentItem() {
-                if (this.currentItemIndex >= 0 && this.currentItemIndex < this.items.length) {
-                    this.saveToUndoStack();
-                    const itemName = this.items[this.currentItemIndex].name;
-                    this.items.splice(this.currentItemIndex, 1);
-                    
-                    if (this.currentItemIndex >= this.items.length) {
-                        this.currentItemIndex = this.items.length - 1;
-                    }
-                    
-                    this.updateDisplay();
-                    this.showSuccess(`"${itemName}" eliminado`);
-                } else {
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.items.length) {
                     this.showError('No hay producto seleccionado para eliminar');
+                    return;
                 }
+
+                this.saveToUndoStack();
+                const deletedItem = this.items.splice(this.currentItemIndex, 1)[0];
+                this.currentItemIndex = Math.min(this.currentItemIndex, this.items.length - 1);
+                this.updateDisplay();
+                this.showSuccess(`"${deletedItem.name}" eliminado`);
             }
 
             navigateItems(direction) {
-                if (this.items.length === 0) return;
+                if (this.items.length === 0) {
+                    this.showError('No hay productos en la lista');
+                    return;
+                }
 
                 this.currentItemIndex += direction;
                 
@@ -1134,197 +1468,12 @@
                     this.currentItemIndex = 0;
                 }
 
-                this.loadCurrentItem();
                 this.updateDisplay();
             }
 
-            loadCurrentItem() {
-                if (this.currentItemIndex >= 0 && this.currentItemIndex < this.items.length) {
-                    const item = this.items[this.currentItemIndex];
-                    this.itemNameInput.value = item.name;
-                    this.itemPriceInput.value = item.price;
-                    this.quantityInput.value = item.quantity;
-                    this.taxInput.value = item.tax;
-                }
-            }
-
-            clearInputs() {
-                this.itemNameInput.value = '';
-                this.itemPriceInput.value = '';
-                this.quantityInput.value = '1';
-                this.taxInput.value = this.settings.defaultTax;
-                this.autocompleteList.style.display = 'none';
-                this.itemNameInput.focus();
-            }
-
-            updateDisplay() {
-                this.updateItemsList();
-                this.updateSummary();
-            }
-
-            updateItemsList() {
-                this.itemsList.innerHTML = '';
-
-                if (this.items.length === 0) {
-                    this.itemsList.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-cart-plus"></i>
-                            <p>No hay productos en la lista</p>
-                        </div>`;
-                    return;
-                }
-
-                this.items.forEach((item, index) => {
-                    const itemRow = document.createElement('div');
-                    itemRow.className = 'item-row fade-in';
-                    if (index === this.currentItemIndex) {
-                        itemRow.style.background = 'rgba(0, 212, 255, 0.1)';
-                        itemRow.style.border = '1px solid rgba(0, 212, 255, 0.3)';
-                    }
-
-                    const productHistory = this.productHistory[item.name];
-                    const lastPrice = productHistory ? productHistory.lastPrice : null;
-                    const priceChange = lastPrice ? item.price - lastPrice : 0;
-
-                    itemRow.innerHTML = `
-                        <div class="item-details">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-info">
-                                <span><i class="fas fa-tag"></i> ${this.formatCurrency(item.price)}</span>
-                                <span><i class="fas fa-layer-group"></i> ${item.quantity}</span>
-                                ${item.tax > 0 ? `<span><i class="fas fa-percentage"></i> ${item.tax}%</span>` : ''}
-                            </div>
-                            ${productHistory && priceChange !== 0 ? `
-                                <div class="price-history">
-                                    <i class="fas fa-${priceChange > 0 ? 'arrow-up' : 'arrow-down'}"></i>
-                                    ${this.formatCurrency(Math.abs(priceChange))} 
-                                    vs última compra
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="item-price-container">
-                            <div class="item-price">${this.formatCurrency(item.total)}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button class="item-action-btn edit-btn" data-index="${index}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="item-action-btn delete-item-btn" data-index="${index}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-
-                    // Add event listeners for edit and delete buttons
-                    const editBtn = itemRow.querySelector('.edit-btn');
-                    const deleteBtn = itemRow.querySelector('.delete-item-btn');
-                    
-                    editBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.editItem(index);
-                    });
-                    
-                    deleteBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.deleteItem(index);
-                    });
-
-                    // Click on row to select item
-                    itemRow.addEventListener('click', () => {
-                        this.currentItemIndex = index;
-                        this.loadCurrentItem();
-                        this.updateDisplay();
-                    });
-
-                    this.itemsList.appendChild(itemRow);
-                });
-            }
-
-            editItem(index) {
-                if (index >= 0 && index < this.items.length) {
-                    const item = this.items[index];
-                    
-                    const newName = prompt('Editar nombre:', item.name);
-                    if (newName !== null) {
-                        const newPrice = parseFloat(prompt('Editar precio:', item.price));
-                        if (!isNaN(newPrice) && newPrice > 0) {
-                            const newQuantity = parseInt(prompt('Editar cantidad:', item.quantity));
-                            if (!isNaN(newQuantity) && newQuantity > 0) {
-                                const newTax = parseFloat(prompt('Editar ITBMS %:', item.tax));
-                                if (!isNaN(newTax) && newTax >= 0) {
-                                    // Save to undo stack
-                                    this.saveToUndoStack();
-                                    
-                                    // Update item
-                                    const oldName = item.name;
-                                    item.name = newName;
-                                    item.price = newPrice;
-                                    item.quantity = newQuantity;
-                                    item.tax = newTax;
-                                    
-                                    // Recalculate
-                                    item.subtotal = newPrice * newQuantity;
-                                    item.taxAmount = item.subtotal * (newTax / 100);
-                                    item.total = item.subtotal + item.taxAmount;
-                                    
-                                    // Update product history
-                                    this.saveToProductHistory(newName, newPrice, newTax);
-                                    
-                                    this.updateDisplay();
-                                    this.showSuccess('Producto actualizado');
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            deleteItem(index) {
-                if (index >= 0 && index < this.items.length) {
-                    const itemName = this.items[index].name;
-                    if (confirm(`¿Eliminar "${itemName}" de la lista?`)) {
-                        this.saveToUndoStack();
-                        this.items.splice(index, 1);
-                        
-                        if (this.currentItemIndex >= index) {
-                            this.currentItemIndex = Math.max(0, this.currentItemIndex - 1);
-                        }
-                        
-                        this.updateDisplay();
-                        this.showSuccess(`"${itemName}" eliminado`);
-                    }
-                }
-            }
-
-            updateSummary() {
-                let subtotal = 0;
-                let totalTaxes = 0;
-                let grandTotal = 0;
-
-                this.items.forEach(item => {
-                    subtotal += item.subtotal;
-                    totalTaxes += item.taxAmount;
-                    grandTotal += item.total;
-                });
-
-                this.subTotalDisplay.textContent = this.formatCurrency(subtotal, false);
-                this.itemTaxesDisplay.textContent = this.formatCurrency(totalTaxes, false);
-                this.totalAmountDisplay.textContent = this.formatCurrency(grandTotal, false);
-            }
-
-            formatCurrency(amount, includeSymbol = true) {
-                const symbol = includeSymbol ? this.settings.currency : '';
-                return `${symbol}${amount.toFixed(2)}`;
-            }
-
-            // Undo functionality
-            saveToUndoStack() {
-                this.undoStack.push(JSON.parse(JSON.stringify(this.items)));
-
-                // Keep only last 10 undo states
-                if (this.undoStack.length > 10) {
-                    this.undoStack.shift();
-                }
+            saveCurrentList() {
+                this.saveList();
+                this.showSuccess('Lista guardada correctamente');
             }
 
             undoLastAction() {
@@ -1333,107 +1482,75 @@
                     return;
                 }
 
-                const lastState = this.undoStack.pop();
-                this.items = lastState;
-                this.currentItemIndex = Math.min(this.currentItemIndex, this.items.length - 1);
-                
+                const previousState = this.undoStack.pop();
+                this.items = previousState.items;
+                this.currentItemIndex = previousState.currentIndex;
                 this.updateDisplay();
                 this.showSuccess('Acción deshecha');
             }
 
-            saveCurrentList() {
+            clearAll() {
                 if (this.items.length === 0) {
-                    this.showError('No hay productos para guardar');
+                    this.showError('La lista ya está vacía');
                     return;
                 }
 
-                const listData = {
-                    items: this.items,
-                    timestamp: new Date(),
-                    total: this.totalAmountDisplay.textContent
-                };
-                
-                localStorage.setItem('lastShoppingList', JSON.stringify(listData));
-                this.showSuccess('Lista guardada correctamente');
+                if (confirm('¿Estás seguro de que quieres limpiar toda la lista?')) {
+                    this.saveToUndoStack();
+                    this.items = [];
+                    this.currentItemIndex = -1;
+                    this.updateDisplay();
+                    this.showSuccess('Lista limpiada');
+                }
             }
 
-            // Export functions
+            newList() {
+                if (this.items.length > 0) {
+                    if (confirm('¿Estás seguro de que quieres crear una nueva lista? Se perderán los productos actuales.')) {
+                        this.saveToUndoStack();
+                        this.items = [];
+                        this.currentItemIndex = -1;
+                        this.updateDisplay();
+                        this.showSuccess('Nueva lista creada');
+                    }
+                } else {
+                    this.showError('La lista ya está vacía');
+                }
+            }
+
             exportList() {
                 if (this.items.length === 0) {
                     this.showError('No hay productos para exportar');
                     return;
                 }
 
-                const exportType = prompt('¿Qué formato prefieres?\n1 - CSV (Excel)\n2 - Factura (Texto)');
-                
-                if (exportType === '1') {
-                    this.exportToCSV();
-                } else if (exportType === '2') {
-                    this.exportToReceipt();
-                }
-            }
-
-            exportToCSV() {
-                let csv = 'Producto,Cantidad,Precio Unitario,ITBMS %,Total\n';
+                let csvContent = "data:text/csv;charset=utf-8,";
+                csvContent += "Producto,Cantidad,Precio,ITBMS%,Subtotal,ITBMS,Total\n";
                 
                 this.items.forEach(item => {
-                    csv += `"${item.name}",${item.quantity},${item.price},${item.tax},${item.total}\n`;
+                    csvContent += `"${item.name}",${item.quantity},${item.price},${item.tax},${item.subtotal},${item.taxAmount},${item.total}\n`;
                 });
                 
-                csv += `,,,Sub Total,${this.subTotalDisplay.textContent}\n`;
-                csv += `,,,ITBMS,${this.itemTaxesDisplay.textContent}\n`;
-                csv += `,,,TOTAL,${this.totalAmountDisplay.textContent}\n`;
+                // Add summary
+                csvContent += `,,,Subtotal,,,${this.calculateSubtotal()}\n`;
+                csvContent += `,,,ITBMS,,,${this.calculateTax()}\n`;
+                csvContent += `,,,TOTAL,,,${this.calculateTotal()}\n`;
                 
-                this.downloadFile(csv, 'lista_supermercado.csv', 'text/csv');
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "lista_compras.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
                 this.showSuccess('Lista exportada a CSV');
             }
 
-            exportToReceipt() {
-                const width = 42;
-                let receipt = '='.repeat(width) + '\n';
-                receipt += 'LISTA DE SUPERMERCADO'.padStart((width + 20) / 2) + '\n';
-                receipt += '='.repeat(width) + '\n\n';
-                
-                this.items.forEach((item, index) => {
-                    const line1 = `${index + 1}. ${item.name}`;
-                    receipt += line1.substring(0, width) + '\n';
-                    
-                    const details = `${item.quantity} x ${this.formatCurrency(item.price)}`;
-                    const total = this.formatCurrency(item.total);
-                    const line2 = details + total.padStart(width - details.length);
-                    receipt += line2 + '\n';
-                    
-                    if (item.tax > 0) {
-                        receipt += `  ITBMS ${item.tax}%` + '\n';
-                    }
-                    receipt += '\n';
-                });
-                
-                receipt += '-'.repeat(width) + '\n';
-                receipt += `Sub Total:${this.subTotalDisplay.textContent.padStart(width - 10)}` + '\n';
-                receipt += `ITBMS:${this.itemTaxesDisplay.textContent.padStart(width - 6)}` + '\n';
-                receipt += `TOTAL:${this.totalAmountDisplay.textContent.padStart(width - 6)}` + '\n';
-                receipt += '='.repeat(width) + '\n';
-                receipt += `Fecha: ${new Date().toLocaleDateString()}` + '\n';
-                receipt += '='.repeat(width) + '\n';
-                
-                this.downloadFile(receipt, 'factura.txt', 'text/plain');
-                this.showSuccess('Factura generada');
+            showCurrencyModal() {
+                this.showSettings();
             }
 
-            downloadFile(content, filename, mimeType) {
-                const blob = new Blob([content], { type: mimeType });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
-
-            // Settings functions
             showSettings() {
                 this.currencySelect.value = this.settings.currency;
                 this.defaultTaxInput.value = this.settings.defaultTax;
@@ -1447,57 +1564,171 @@
             saveNewSettings() {
                 this.settings.currency = this.currencySelect.value;
                 this.settings.defaultTax = parseFloat(this.defaultTaxInput.value) || 0;
-                
                 this.saveSettings();
-                this.updateDisplay();
-                this.currencyBtn.innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
-                this.taxInput.value = this.settings.defaultTax;
-                
                 this.hideSettings();
+                this.updateDisplay();
                 this.showSuccess('Configuración guardada');
             }
 
-            showCurrencyModal() {
-                this.showSettings();
+            showHelp() {
+                alert('Smart Market List - Ayuda\n\n• Agrega productos con nombre, precio y cantidad\n• Usa el historial para productos frecuentes\n• Navega entre productos con los botones de flecha\n• Guarda y exporta tus listas\n• Configura moneda e impuestos en ajustes\n• Usa la calculadora para hacer cálculos rápidos');
             }
 
-            // Utility functions
-            clearAll() {
-                if (this.items.length === 0) return;
+            saveToUndoStack() {
+                this.undoStack.push({
+                    items: [...this.items],
+                    currentIndex: this.currentItemIndex
+                });
 
-                if (confirm('¿Estás seguro de que quieres limpiar toda la lista?')) {
-                    this.saveToUndoStack();
-                    this.items = [];
-                    this.currentItemIndex = -1;
-                    this.clearInputs();
-                    this.updateDisplay();
-                    this.showSuccess('Lista limpiada');
+                // Limitar el tamaño de la pila de deshacer
+                if (this.undoStack.length > 10) {
+                    this.undoStack.shift();
                 }
             }
 
-            newList() {
-                this.clearAll();
+            clearInputs() {
+                this.itemNameInput.value = '';
+                this.itemPriceInput.value = '';
+                this.quantityInput.value = '1';
+                this.autocompleteList.style.display = 'none';
+                this.itemNameInput.focus();
             }
 
-            showHelp() {
-                const helpText = `
-AYUDA - SMART MARKET LIST
+            calculateSubtotal() {
+                return this.items.reduce((sum, item) => sum + item.subtotal, 0);
+            }
 
-FUNCIONES PRINCIPALES:
-• Agregar productos: Escribe nombre y precio, luego presiona +
-• Autocompletado: Al escribir, sugiere productos usados antes
-• Editar: Haz clic en ✏️ junto a un producto
-• Eliminar: Haz clic en 🗑️ junto a un producto
-• Navegar: Usa ‹ › para moverte entre productos
-• Guardar: 💾 guarda la lista actual
-• Deshacer: ↩️ deshace la última acción
-• Limpiar: 🧹 limpia toda la lista
-• Exportar: 📤 exporta a CSV o factura
-• Configuración: ⚙️ ajusta moneda e ITBMS
+            calculateTax() {
+                return this.items.reduce((sum, item) => sum + item.taxAmount, 0);
+            }
 
-¡La app recuerda precios anteriores de cada producto!
-                `;
-                alert(helpText);
+            calculateTotal() {
+                return this.calculateSubtotal() + this.calculateTax();
+            }
+
+            updateDisplay() {
+                this.updateItemsList();
+                this.updateSummary();
+                this.updateNavigationButtons();
+            }
+
+            updateItemsList() {
+                if (this.items.length === 0) {
+                    this.itemsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>No hay productos en la lista</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.itemsList.innerHTML = '';
+                this.items.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = `item-row ${index === this.currentItemIndex ? 'selected' : ''}`;
+                    if (index === this.currentItemIndex) {
+                        itemElement.style.background = 'rgba(0, 212, 255, 0.1)';
+                        itemElement.style.border = '1px solid rgba(0, 212, 255, 0.3)';
+                    }
+                    
+                    itemElement.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-info">
+                                <span><i class="fas fa-tag"></i> ${this.formatCurrency(item.price)}</span>
+                                <span><i class="fas fa-layer-group"></i> ${item.quantity}</span>
+                                ${item.tax > 0 ? `<span><i class="fas fa-percentage"></i> ${item.tax}%</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="item-price-container">
+                            <div class="item-price">${this.formatCurrency(item.total)}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="item-action-btn edit-btn" data-id="${item.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="item-action-btn delete-item-btn" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    this.itemsList.appendChild(itemElement);
+                });
+
+                // Add event listeners for item actions
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.currentTarget.getAttribute('data-id'));
+                        this.editItem(id);
+                    });
+                });
+
+                document.querySelectorAll('.delete-item-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.currentTarget.getAttribute('data-id'));
+                        this.deleteItem(id);
+                    });
+                });
+            }
+
+            editItem(id) {
+                const itemIndex = this.items.findIndex(item => item.id === id);
+                if (itemIndex === -1) return;
+
+                const item = this.items[itemIndex];
+                this.itemNameInput.value = item.name;
+                this.itemPriceInput.value = item.price;
+                this.quantityInput.value = item.quantity;
+                this.taxInput.value = item.tax;
+                
+                this.saveToUndoStack();
+                this.items.splice(itemIndex, 1);
+                this.currentItemIndex = -1;
+                this.updateDisplay();
+                this.itemNameInput.focus();
+                this.showSuccess('Producto listo para editar');
+            }
+
+            deleteItem(id) {
+                const itemIndex = this.items.findIndex(item => item.id === id);
+                if (itemIndex === -1) return;
+
+                const itemName = this.items[itemIndex].name;
+                if (confirm(`¿Eliminar "${itemName}" de la lista?`)) {
+                    this.saveToUndoStack();
+                    this.items.splice(itemIndex, 1);
+                    if (this.currentItemIndex >= itemIndex) {
+                        this.currentItemIndex = Math.max(0, this.currentItemIndex - 1);
+                    }
+                    this.updateDisplay();
+                    this.showSuccess(`"${itemName}" eliminado`);
+                }
+            }
+
+            updateSummary() {
+                const subtotal = this.calculateSubtotal();
+                const tax = this.calculateTax();
+                const total = this.calculateTotal();
+
+                this.subTotalDisplay.textContent = this.formatCurrency(subtotal);
+                this.itemTaxesDisplay.textContent = this.formatCurrency(tax);
+                this.totalAmountDisplay.textContent = this.formatCurrency(total);
+            }
+
+            updateNavigationButtons() {
+                const hasItems = this.items.length > 0;
+                this.deleteBtn.disabled = !hasItems;
+                this.prevBtn.disabled = !hasItems;
+                this.nextBtn.disabled = !hasItems;
+                this.saveBtn.disabled = !hasItems;
+                this.undoBtn.disabled = this.undoStack.length === 0;
+                this.clearBtn.disabled = !hasItems;
+                this.exportBtn.disabled = !hasItems;
+            }
+
+            formatCurrency(amount) {
+                return `${this.settings.currency}${amount.toFixed(2)}`;
             }
 
             showSuccess(message) {
@@ -1509,6 +1740,7 @@ FUNCIONES PRINCIPALES:
             }
 
             showNotification(message, type) {
+                // Remove any existing notifications
                 const existingNotifications = document.querySelectorAll('.notification');
                 existingNotifications.forEach(notification => {
                     notification.remove();
@@ -1520,7 +1752,6 @@ FUNCIONES PRINCIPALES:
                     <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
                     <span>${message}</span>
                 `;
-
                 document.body.appendChild(notification);
 
                 setTimeout(() => {
@@ -1534,9 +1765,9 @@ FUNCIONES PRINCIPALES:
             }
         }
 
-        // Initialize the application when DOM is loaded
+        // Initialize the app when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            window.shoppingCalculator = new ShoppingCalculator();
+            new ShoppingCalculator();
         });
     </script>
 </body>
