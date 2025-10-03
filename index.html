@@ -984,6 +984,7 @@
                     }
                 } catch(error) {
                     console.error("Error al cargar el historial de productos:", error);
+                    this.productHistory = {};
                 }
             }
             
@@ -996,11 +997,18 @@
                     }
                 } catch(error) {
                     console.error("Error al cargar la lista guardada:", error);
+                    this.items = [];
                 }
             }
 
-            saveSettings() { localStorage.setItem('shoppingSettings', JSON.stringify(this.settings)); }
-            saveProductHistory() { localStorage.setItem('productHistory', JSON.stringify(this.productHistory)); }
+            saveSettings() { 
+                localStorage.setItem('shoppingSettings', JSON.stringify(this.settings)); 
+            }
+            
+            saveProductHistory() { 
+                localStorage.setItem('productHistory', JSON.stringify(this.productHistory)); 
+            }
+            
             saveList() {
                 const listData = { items: this.items, timestamp: new Date().toISOString() };
                 localStorage.setItem('savedShoppingList', JSON.stringify(listData));
@@ -1197,37 +1205,13 @@
                 const price = parseFloat(this.itemPriceInput.value) || 0;
                 const quantity = parseInt(this.quantityInput.value) || 1;
                 const tax = parseFloat(this.taxInput.value) || 0;
-                
-                if (!name) { 
-                    this.showError('Ingresa el nombre del producto'); 
-                    this.itemNameInput.focus(); 
-                    return; 
-                }
-                
-                if (price <= 0) { 
-                    this.showError('Ingresa un precio válido'); 
-                    this.itemPriceInput.focus(); 
-                    return; 
-                }
-                
+                if (!name) { this.showError('Ingresa el nombre del producto'); this.itemNameInput.focus(); return; }
+                if (price <= 0) { this.showError('Ingresa un precio válido'); this.itemPriceInput.focus(); return; }
                 this.saveToUndoStack();
-                
-                // CÁLCULOS CORREGIDOS
                 const subtotal = price * quantity;
                 const taxAmount = subtotal * (tax / 100);
                 const total = subtotal + taxAmount;
-                
-                const item = { 
-                    id: Date.now(), 
-                    name, 
-                    price, 
-                    quantity, 
-                    tax, 
-                    subtotal, 
-                    taxAmount, 
-                    total 
-                };
-                
+                const item = { id: Date.now(), name, price, quantity, tax, subtotal, taxAmount, total };
                 this.items.push(item);
                 this.currentItemIndex = this.items.length - 1;
                 this.saveToProductHistory(name, price, tax);
@@ -1238,23 +1222,33 @@
 
             saveToProductHistory(productName, price, tax) {
                 if (!this.productHistory[productName]) {
-                    this.productHistory[productName] = { lastPrice: 0, lastTax: 0, timesUsed: 0, priceHistory: [] };
+                    this.productHistory[productName] = { 
+                        lastPrice: 0, 
+                        lastTax: 0, 
+                        timesUsed: 0, 
+                        priceHistory: [] 
+                    };
                 }
+                
                 const product = this.productHistory[productName];
+                
+                // 🔒 Asegurar que priceHistory exista como array
+                if (!Array.isArray(product.priceHistory)) {
+                    product.priceHistory = [];
+                }
+
                 product.lastPrice = price;
                 product.lastTax = tax;
                 product.lastUsed = new Date().toISOString();
                 product.timesUsed++;
                 product.priceHistory.push({ price: price, date: new Date().toISOString() });
+                
                 if (product.priceHistory.length > 10) product.priceHistory.shift();
                 this.saveProductHistory();
             }
 
             deleteCurrentItem() {
-                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.items.length) { 
-                    this.showError('No hay producto seleccionado'); 
-                    return; 
-                }
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.items.length) { this.showError('No hay producto seleccionado'); return; }
                 this.saveToUndoStack();
                 const deletedItem = this.items.splice(this.currentItemIndex, 1)[0];
                 this.currentItemIndex = Math.min(this.currentItemIndex, this.items.length - 1);
@@ -1388,7 +1382,7 @@
                     }
                     let priceHistoryHTML = '';
                     const productHistory = this.productHistory[item.name];
-                    if (productHistory && productHistory.priceHistory.length > 1) {
+                    if (productHistory && Array.isArray(productHistory.priceHistory) && productHistory.priceHistory.length > 1) {
                         const history = productHistory.priceHistory;
                         const lastPrice = history[history.length - 1].price;
                         const previousPrice = history[history.length - 2].price;
