@@ -205,9 +205,8 @@
             box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
         }
 
-        /* MODIFICACIONES PARA EL CAMPO DE CANTIDAD */
         .quantity-input {
-            width: 80px; /* Más compacto para móviles */
+            width: 80px; 
             padding: 12px 10px;
             text-align: center;
         }
@@ -227,7 +226,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0; /* Evita que se reduzca */
+            flex-shrink: 0;
         }
 
         .add-btn:hover {
@@ -326,7 +325,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-width: 0; /* Prevenir desbordamiento */
+            min-width: 0;
         }
 
         .item-name {
@@ -542,40 +541,20 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
 
-        .fade-in {
-            animation: fadeIn 0.4s ease-in;
-        }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .empty-state {
@@ -615,12 +594,6 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--surface-light);
         }
-					/* AJUSTE PARA LA VENTANA DE LA CALCULADORA */
-		.calculator-modal .modal-content {
-			width: auto; /* Hace que el ancho de la ventana se ajuste al de la calculadora */
-			max-height: none; /* Elimina el límite de altura */
-			overflow-y: visible; /* Asegura que no aparezca el scroll vertical */
-		}
 
         .modal-header {
             display: flex;
@@ -646,13 +619,9 @@
             transition: all 0.3s ease;
         }
 
-        .modal-close:hover {
-            color: var(--error);
-        }
+        .modal-close:hover { color: var(--error); }
 
-        .settings-group {
-            margin-bottom: 20px;
-        }
+        .settings-group { margin-bottom: 20px; }
 
         .settings-label {
             display: block;
@@ -697,82 +666,31 @@
             box-shadow: 0 6px 15px rgba(0, 212, 255, 0.4);
         }
 
-        /* Scrollbar personalizado */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--surface-light); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
-        ::-webkit-scrollbar-track {
-            background: var(--surface-light);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Responsive para móviles */
         @media (min-width: 480px) {
-            .app-container {
-                max-width: 480px;
-                padding: 20px;
-            }
-            
-            .input-row {
-                flex-direction: row;
-            }
-            
-            .autocomplete-container {
-                width: auto;
-                flex: 2;
-            }
-            
-            .price-input {
-                flex: 1;
-            }
-            
-            /* Ajuste específico para el control de cantidad en pantallas más grandes */
-            .control-group.quantity-group {
-                flex-wrap: nowrap;
-            }
+            .app-container { max-width: 480px; padding: 20px; }
+            .input-row { flex-direction: row; }
+            .autocomplete-container { width: auto; flex: 2; }
+            .price-input { flex: 1; }
+            .control-group.quantity-group { flex-wrap: nowrap; }
         }
 
-        /* NUEVOS ESTILOS PARA MEJORAR LA EXPERIENCIA EN MÓVILES */
         @media (max-width: 479px) {
-            .control-group {
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-            
-            .control-label {
-                min-width: 100px;
-                margin-bottom: 8px;
-            }
-            
-            .quantity-input {
-                width: 70px;
-                margin-right: 10px;
-            }
-            
-            .add-btn {
-                width: 50px;
-                flex-shrink: 0;
-            }
-            
-            .control-group.quantity-group {
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-            }
+            .control-group { flex-wrap: wrap; justify-content: space-between; }
+            .control-label { min-width: 100px; margin-bottom: 8px; }
+            .quantity-input { width: 70px; margin-right: 10px; }
+            .add-btn { width: 50px; flex-shrink: 0; }
+            .control-group.quantity-group { flex-wrap: nowrap; justify-content: flex-start; }
         }
 
-        /* ESTILOS PARA LA CALCULADORA */
-        .calculator-modal {
-            display: none;
+        .calculator-modal .modal-content {
+            width: auto;
+            max-height: none;
+            overflow-y: visible;
         }
 
         .calculator {
@@ -819,36 +737,13 @@
             justify-content: center;
         }
 
-        .calc-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .calc-btn.operator {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--primary);
-        }
-
-        .calc-btn.operator:hover {
-            background: rgba(0, 212, 255, 0.3);
-        }
-
-        .calc-btn.equals {
-            background: linear-gradient(135deg, var(--success), #00c853);
-            color: white;
-        }
-
-        .calc-btn.clear {
-            background: rgba(255, 82, 82, 0.2);
-            color: var(--error);
-        }
-
-        .calc-btn.clear:hover {
-            background: rgba(255, 82, 82, 0.3);
-        }
-
-        .calc-btn.zero {
-            grid-column: span 2;
-        }
+        .calc-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .calc-btn.operator { background: rgba(0, 212, 255, 0.2); color: var(--primary); }
+        .calc-btn.operator:hover { background: rgba(0, 212, 255, 0.3); }
+        .calc-btn.equals { background: linear-gradient(135deg, var(--success), #00c853); color: white; }
+        .calc-btn.clear { background: rgba(255, 82, 82, 0.2); color: var(--error); }
+        .calc-btn.clear:hover { background: rgba(255, 82, 82, 0.3); }
+        .calc-btn.zero { grid-column: span 2; }
     </style>
 </head>
 <body>
@@ -1008,22 +903,18 @@
                     <button class="calc-btn clear" data-action="clearEntry">CE</button>
                     <button class="calc-btn operator" data-action="backspace">⌫</button>
                     <button class="calc-btn operator" data-action="divide">/</button>
-                    
                     <button class="calc-btn" data-number="7">7</button>
                     <button class="calc-btn" data-number="8">8</button>
                     <button class="calc-btn" data-number="9">9</button>
                     <button class="calc-btn operator" data-action="multiply">×</button>
-                    
                     <button class="calc-btn" data-number="4">4</button>
                     <button class="calc-btn" data-number="5">5</button>
                     <button class="calc-btn" data-number="6">6</button>
                     <button class="calc-btn operator" data-action="subtract">-</button>
-                    
                     <button class="calc-btn" data-number="1">1</button>
                     <button class="calc-btn" data-number="2">2</button>
                     <button class="calc-btn" data-number="3">3</button>
                     <button class="calc-btn operator" data-action="add">+</button>
-                    
                     <button class="calc-btn zero" data-number="0">0</button>
                     <button class="calc-btn" data-action="decimal">.</button>
                     <button class="calc-btn equals" data-action="calculate">=</button>
@@ -1032,90 +923,99 @@
         </div>
     </div>
 
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-export"></i> Opciones de Exportación</h2>
+                <button class="modal-close" id="closeExport">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-group">
+                <p style="color: var(--text-secondary); text-align: center; margin-bottom: 20px;">
+                    Elige el formato en el que deseas descargar tu lista de compras.
+                </p>
+                <button id="exportCsvBtn" class="btn-primary" style="margin-bottom: 10px;">
+                    <i class="fas fa-file-csv"></i> Exportar como CSV
+                </button>
+                <button id="exportTxtBtn" class="btn-primary">
+                    <i class="fas fa-file-alt"></i> Exportar como Texto (.txt)
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         class ShoppingCalculator {
             constructor() {
-                // ================== INICIO DE LA CORRECCIÓN ==================
-                // 1. Inicializar propiedades de estado primero
                 this.items = [];
                 this.currentItemIndex = -1;
                 this.undoStack = [];
-                this.settings = {
-                    currency: '$',
-                    defaultTax: 0
-                };
+                this.settings = { currency: '$', defaultTax: 0 };
                 this.productHistory = {};
                 
-                // 2. Inicializar los elementos del DOM. ESTO DEBE OCURRIR ANTES que cualquier función que los use.
                 this.initializeElements();
                 
-                // 3. Ahora sí, cargar datos y vincular eventos
                 this.loadSettings();
                 this.loadProductHistory();
                 this.loadSavedList();
                 this.bindEvents();
                 this.updateDisplay();
-                // =================== FIN DE LA CORRECCIÓN ====================
             }
 
             loadSettings() {
-                const savedSettings = localStorage.getItem('shoppingSettings');
-                if (savedSettings) {
-                    this.settings = {...this.settings, ...JSON.parse(savedSettings)};
+                try {
+                    const savedSettings = localStorage.getItem('shoppingSettings');
+                    if (savedSettings) {
+                        this.settings = {...this.settings, ...JSON.parse(savedSettings)};
+                    }
+                } catch (error) {
+                    console.error("Error al cargar la configuración:", error);
                 }
-                // Estas líneas ahora funcionan porque this.taxInput y this.currencyBtn ya existen
                 this.currencyBtn.innerHTML = `<i class="fas fa-${this.settings.currency === '$' ? 'dollar-sign' : this.settings.currency === '€' ? 'euro-sign' : 'money-bill'}"></i>`;
                 this.taxInput.value = this.settings.defaultTax;
             }
 
             loadProductHistory() {
-                const savedHistory = localStorage.getItem('productHistory');
-                if (savedHistory) {
-                    this.productHistory = JSON.parse(savedHistory);
-                    this.updateAutocomplete(); // Ahora es seguro llamar a esta función
+                try {
+                    const savedHistory = localStorage.getItem('productHistory');
+                    if (savedHistory) {
+                        this.productHistory = JSON.parse(savedHistory);
+                    }
+                } catch(error) {
+                    console.error("Error al cargar el historial de productos:", error);
                 }
             }
-
+            
             loadSavedList() {
-                const savedList = localStorage.getItem('savedShoppingList');
-                if (savedList) {
-                    const listData = JSON.parse(savedList);
-                    this.items = listData.items || [];
-                    this.updateDisplay(); // Ahora es seguro llamar a esta función
+                try {
+                    const savedList = localStorage.getItem('savedShoppingList');
+                    if (savedList) {
+                        const listData = JSON.parse(savedList);
+                        this.items = listData.items || [];
+                    }
+                } catch(error) {
+                    console.error("Error al cargar la lista guardada:", error);
                 }
             }
 
-            saveSettings() {
-                localStorage.setItem('shoppingSettings', JSON.stringify(this.settings));
-            }
-
-            saveProductHistory() {
-                localStorage.setItem('productHistory', JSON.stringify(this.productHistory));
-            }
-
+            saveSettings() { localStorage.setItem('shoppingSettings', JSON.stringify(this.settings)); }
+            saveProductHistory() { localStorage.setItem('productHistory', JSON.stringify(this.productHistory)); }
             saveList() {
-                const listData = {
-                    items: this.items,
-                    timestamp: new Date().toISOString()
-                };
+                const listData = { items: this.items, timestamp: new Date().toISOString() };
                 localStorage.setItem('savedShoppingList', JSON.stringify(listData));
             }
 
             initializeElements() {
-                // Input elements
                 this.itemNameInput = document.getElementById('itemName');
                 this.itemPriceInput = document.getElementById('itemPrice');
                 this.quantityInput = document.getElementById('quantity');
                 this.taxInput = document.getElementById('tax');
                 this.autocompleteList = document.getElementById('autocompleteList');
-                
-                // Display elements
                 this.itemsList = document.getElementById('itemsList');
                 this.subTotalDisplay = document.getElementById('subTotal');
                 this.itemTaxesDisplay = document.getElementById('itemTaxes');
                 this.totalAmountDisplay = document.getElementById('totalAmount');
-                
-                // Button elements
                 this.addItemBtn = document.getElementById('addItemBtn');
                 this.deleteBtn = document.getElementById('deleteBtn');
                 this.prevBtn = document.getElementById('prevBtn');
@@ -1129,85 +1029,50 @@
                 this.currencyBtn = document.getElementById('currencyBtn');
                 this.settingsBtn = document.getElementById('settingsBtn');
                 this.helpBtn = document.getElementById('helpBtn');
-
-                // Modal elements
                 this.settingsModal = document.getElementById('settingsModal');
                 this.closeSettings = document.getElementById('closeSettings');
                 this.currencySelect = document.getElementById('currencySelect');
                 this.defaultTaxInput = document.getElementById('defaultTax');
                 this.saveSettingsBtn = document.getElementById('saveSettings');
-
-                // Calculator elements
                 this.calculatorModal = document.getElementById('calculatorModal');
                 this.closeCalculator = document.getElementById('closeCalculator');
                 this.calcDisplay = document.getElementById('calcDisplay');
-                
-                // Initialize calculator state
-                this.calculator = {
-                    displayValue: '0',
-                    firstOperand: null,
-                    waitingForSecondOperand: false,
-                    operator: null
-                };
+                this.exportModal = document.getElementById('exportModal');
+                this.closeExport = document.getElementById('closeExport');
+                this.exportCsvBtn = document.getElementById('exportCsvBtn');
+                this.exportTxtBtn = document.getElementById('exportTxtBtn');
+                this.calculator = { displayValue: '0', firstOperand: null, waitingForSecondOperand: false, operator: null };
             }
 
             bindEvents() {
-                // Add item button
                 this.addItemBtn.addEventListener('click', () => this.addItem());
-                
-                // Navigation buttons
                 this.deleteBtn.addEventListener('click', () => this.deleteCurrentItem());
                 this.prevBtn.addEventListener('click', () => this.navigateItems(-1));
                 this.nextBtn.addEventListener('click', () => this.navigateItems(1));
-                
-                // Action buttons
                 this.saveBtn.addEventListener('click', () => this.saveCurrentList());
                 this.undoBtn.addEventListener('click', () => this.undoLastAction());
                 this.clearBtn.addEventListener('click', () => this.clearAll());
-                
-                // Bottom action bar
                 this.newListBtn.addEventListener('click', () => this.newList());
-                this.exportBtn.addEventListener('click', () => this.exportList());
+                this.exportBtn.addEventListener('click', () => this.showExportModal());
                 this.calculatorBtn.addEventListener('click', () => this.showCalculator());
                 this.currencyBtn.addEventListener('click', () => this.showCurrencyModal());
                 this.settingsBtn.addEventListener('click', () => this.showSettings());
                 this.helpBtn.addEventListener('click', () => this.showHelp());
-                
-                // Modal events
                 this.closeSettings.addEventListener('click', () => this.hideSettings());
                 this.saveSettingsBtn.addEventListener('click', () => this.saveNewSettings());
-                
-                // Calculator events
                 this.closeCalculator.addEventListener('click', () => this.hideCalculator());
                 this.bindCalculatorEvents();
-                
-                // Enter key to add item
-                this.itemNameInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.addItem();
-                });
-                
-                this.itemPriceInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.addItem();
-                });
-
-                // Autocomplete events
+                this.itemNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.addItem(); });
+                this.itemPriceInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.addItem(); });
                 this.itemNameInput.addEventListener('input', () => this.updateAutocomplete());
                 this.itemNameInput.addEventListener('focus', () => this.updateAutocomplete());
-
-                // Cerrar modal al hacer clic fuera
-                this.settingsModal.addEventListener('click', (e) => {
-                    if (e.target === this.settingsModal) this.hideSettings();
-                });
-
-                this.calculatorModal.addEventListener('click', (e) => {
-                    if (e.target === this.calculatorModal) this.hideCalculator();
-                });
-
-                // Guardar productos cuando se cierra la página
-                window.addEventListener('beforeunload', () => {
-                    this.saveProductHistory();
-                    this.saveList();
-                });
+                this.settingsModal.addEventListener('click', (e) => { if (e.target === this.settingsModal) this.hideSettings(); });
+                this.calculatorModal.addEventListener('click', (e) => { if (e.target === this.calculatorModal) this.hideCalculator(); });
+                this.closeExport.addEventListener('click', () => this.hideExportModal());
+                this.exportCsvBtn.addEventListener('click', () => this.exportAsCSV());
+                this.exportTxtBtn.addEventListener('click', () => this.exportAsTXT());
+                this.exportModal.addEventListener('click', (e) => { if (e.target === this.exportModal) this.hideExportModal(); });
+                window.addEventListener('beforeunload', () => { this.saveProductHistory(); this.saveList(); });
             }
 
             bindCalculatorEvents() {
@@ -1216,7 +1081,6 @@
                     button.addEventListener('click', () => {
                         const number = button.getAttribute('data-number');
                         const action = button.getAttribute('data-action');
-                        
                         if (number !== null) {
                             this.inputNumber(number);
                         } else if (action !== null) {
@@ -1226,52 +1090,32 @@
                 });
             }
 
-            // Calculator functionality
             inputNumber(number) {
                 const { displayValue, waitingForSecondOperand } = this.calculator;
-
                 if (waitingForSecondOperand) {
                     this.calculator.displayValue = number;
                     this.calculator.waitingForSecondOperand = false;
                 } else {
                     this.calculator.displayValue = displayValue === '0' ? number : displayValue + number;
                 }
-
                 this.updateCalculatorDisplay();
             }
-
+            
             inputAction(action) {
                 switch (action) {
                     case 'clear':
-                        this.calculator.displayValue = '0';
-                        this.calculator.firstOperand = null;
-                        this.calculator.waitingForSecondOperand = false;
-                        this.calculator.operator = null;
+                        this.calculator = { displayValue: '0', firstOperand: null, waitingForSecondOperand: false, operator: null };
                         break;
                     case 'clearEntry':
                         this.calculator.displayValue = '0';
                         break;
                     case 'backspace':
-                        if (this.calculator.displayValue.length > 1) {
-                            this.calculator.displayValue = this.calculator.displayValue.slice(0, -1);
-                        } else {
-                            this.calculator.displayValue = '0';
-                        }
+                        this.calculator.displayValue = this.calculator.displayValue.length > 1 ? this.calculator.displayValue.slice(0, -1) : '0';
                         break;
                     case 'decimal':
-                        if (this.calculator.waitingForSecondOperand) {
-                            this.calculator.displayValue = '0.';
-                            this.calculator.waitingForSecondOperand = false;
-                            return;
-                        }
-                        if (!this.calculator.displayValue.includes('.')) {
-                            this.calculator.displayValue += '.';
-                        }
+                        if (!this.calculator.displayValue.includes('.')) this.calculator.displayValue += '.';
                         break;
-                    case 'add':
-                    case 'subtract':
-                    case 'multiply':
-                    case 'divide':
+                    case 'add': case 'subtract': case 'multiply': case 'divide':
                         this.handleOperator(action);
                         break;
                     case 'calculate':
@@ -1284,12 +1128,10 @@
             handleOperator(nextOperator) {
                 const { firstOperand, displayValue, operator } = this.calculator;
                 const inputValue = parseFloat(displayValue);
-
                 if (operator && this.calculator.waitingForSecondOperand) {
                     this.calculator.operator = nextOperator;
                     return;
                 }
-
                 if (firstOperand === null) {
                     this.calculator.firstOperand = inputValue;
                 } else if (operator) {
@@ -1297,7 +1139,6 @@
                     this.calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
                     this.calculator.firstOperand = result;
                 }
-
                 this.calculator.waitingForSecondOperand = true;
                 this.calculator.operator = nextOperator;
             }
@@ -1305,7 +1146,6 @@
             handleCalculation() {
                 const { firstOperand, displayValue, operator } = this.calculator;
                 const inputValue = parseFloat(displayValue);
-
                 if (operator && firstOperand !== null) {
                     const result = this.performCalculation(operator, firstOperand, inputValue);
                     this.calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
@@ -1315,54 +1155,31 @@
                 }
             }
 
-            performCalculation(operator, firstOperand, secondOperand) {
-                switch (operator) {
-                    case 'add': return firstOperand + secondOperand;
-                    case 'subtract': return firstOperand - secondOperand;
-                    case 'multiply': return firstOperand * secondOperand;
-                    case 'divide': return firstOperand / secondOperand;
-                    default: return secondOperand;
-                }
+            performCalculation(op, a, b) {
+                if (op === 'add') return a + b;
+                if (op === 'subtract') return a - b;
+                if (op === 'multiply') return a * b;
+                if (op === 'divide') return a / b;
+                return b;
             }
 
-            updateCalculatorDisplay() {
-                this.calcDisplay.textContent = this.calculator.displayValue;
-            }
-
-            showCalculator() {
-                this.calculatorModal.style.display = 'flex';
-            }
-
-            hideCalculator() {
-                this.calculatorModal.style.display = 'none';
-            }
-
+            updateCalculatorDisplay() { this.calcDisplay.textContent = this.calculator.displayValue; }
+            showCalculator() { this.calculatorModal.style.display = 'flex'; }
+            hideCalculator() { this.calculatorModal.style.display = 'none'; }
+            showExportModal() { if (this.items.length > 0) this.exportModal.style.display = 'flex'; else this.showError('No hay productos para exportar'); }
+            hideExportModal() { this.exportModal.style.display = 'none'; }
+            
             updateAutocomplete() {
                 const query = this.itemNameInput.value.toLowerCase().trim();
                 this.autocompleteList.innerHTML = '';
-                
-                if (query.length < 2) {
-                    this.autocompleteList.style.display = 'none';
-                    return;
-                }
-                
-                const matches = Object.keys(this.productHistory)
-                    .filter(name => name.toLowerCase().includes(query))
-                    .slice(0, 5);
-                
-                if (matches.length === 0) {
-                    this.autocompleteList.style.display = 'none';
-                    return;
-                }
-                
+                if (query.length < 2) { this.autocompleteList.style.display = 'none'; return; }
+                const matches = Object.keys(this.productHistory).filter(name => name.toLowerCase().includes(query)).slice(0, 5);
+                if (matches.length === 0) { this.autocompleteList.style.display = 'none'; return; }
                 matches.forEach(productName => {
                     const product = this.productHistory[productName];
                     const item = document.createElement('div');
                     item.className = 'autocomplete-item';
-                    item.innerHTML = `
-                        <span class="autocomplete-name">${productName}</span>
-                        <span class="autocomplete-price">${this.formatCurrency(product.lastPrice)}</span>
-                    `;
+                    item.innerHTML = `<span class="autocomplete-name">${productName}</span><span class="autocomplete-price">${this.formatCurrency(product.lastPrice)}</span>`;
                     item.addEventListener('click', () => {
                         this.itemNameInput.value = productName;
                         this.itemPriceInput.value = product.lastPrice;
@@ -1372,7 +1189,6 @@
                     });
                     this.autocompleteList.appendChild(item);
                 });
-                
                 this.autocompleteList.style.display = 'block';
             }
 
@@ -1381,72 +1197,64 @@
                 const price = parseFloat(this.itemPriceInput.value) || 0;
                 const quantity = parseInt(this.quantityInput.value) || 1;
                 const tax = parseFloat(this.taxInput.value) || 0;
-
-                if (!name) {
-                    this.showError('Por favor ingresa el nombre del producto');
-                    this.itemNameInput.focus();
-                    return;
+                
+                if (!name) { 
+                    this.showError('Ingresa el nombre del producto'); 
+                    this.itemNameInput.focus(); 
+                    return; 
                 }
-
-                if (price <= 0) {
-                    this.showError('Por favor ingresa un precio válido');
-                    this.itemPriceInput.focus();
-                    return;
+                
+                if (price <= 0) { 
+                    this.showError('Ingresa un precio válido'); 
+                    this.itemPriceInput.focus(); 
+                    return; 
                 }
-
-                // Save to undo stack
+                
                 this.saveToUndoStack();
-
-                // Calculate item totals
+                
+                // CÁLCULOS CORREGIDOS
                 const subtotal = price * quantity;
                 const taxAmount = subtotal * (tax / 100);
                 const total = subtotal + taxAmount;
-
-                const item = {
-                    id: Date.now(),
-                    name,
-                    price,
-                    quantity,
-                    tax,
-                    subtotal,
-                    taxAmount,
-                    total,
-                    timestamp: new Date()
+                
+                const item = { 
+                    id: Date.now(), 
+                    name, 
+                    price, 
+                    quantity, 
+                    tax, 
+                    subtotal, 
+                    taxAmount, 
+                    total 
                 };
-
+                
                 this.items.push(item);
                 this.currentItemIndex = this.items.length - 1;
-
-                // Save to product history
                 this.saveToProductHistory(name, price, tax);
-
-                // Clear inputs
                 this.clearInputs();
-
-                // Update display
                 this.updateDisplay();
-                this.showSuccess('Producto agregado correctamente');
+                this.showSuccess('Producto agregado');
             }
 
             saveToProductHistory(productName, price, tax) {
-                // Guardar en el historial de productos
-                this.productHistory[productName] = {
-                    lastPrice: price,
-                    lastTax: tax,
-                    lastUsed: new Date().toISOString(),
-                    timesUsed: (this.productHistory[productName]?.timesUsed || 0) + 1
-                };
-                
+                if (!this.productHistory[productName]) {
+                    this.productHistory[productName] = { lastPrice: 0, lastTax: 0, timesUsed: 0, priceHistory: [] };
+                }
+                const product = this.productHistory[productName];
+                product.lastPrice = price;
+                product.lastTax = tax;
+                product.lastUsed = new Date().toISOString();
+                product.timesUsed++;
+                product.priceHistory.push({ price: price, date: new Date().toISOString() });
+                if (product.priceHistory.length > 10) product.priceHistory.shift();
                 this.saveProductHistory();
-                this.updateAutocomplete();
             }
 
             deleteCurrentItem() {
-                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.items.length) {
-                    this.showError('No hay producto seleccionado para eliminar');
-                    return;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.items.length) { 
+                    this.showError('No hay producto seleccionado'); 
+                    return; 
                 }
-
                 this.saveToUndoStack();
                 const deletedItem = this.items.splice(this.currentItemIndex, 1)[0];
                 this.currentItemIndex = Math.min(this.currentItemIndex, this.items.length - 1);
@@ -1455,47 +1263,25 @@
             }
 
             navigateItems(direction) {
-                if (this.items.length === 0) {
-                    this.showError('No hay productos en la lista');
-                    return;
-                }
-
-                this.currentItemIndex += direction;
-                
-                if (this.currentItemIndex < 0) {
-                    this.currentItemIndex = this.items.length - 1;
-                } else if (this.currentItemIndex >= this.items.length) {
-                    this.currentItemIndex = 0;
-                }
-
+                if (this.items.length === 0) return;
+                this.currentItemIndex = (this.currentItemIndex + direction + this.items.length) % this.items.length;
                 this.updateDisplay();
             }
 
-            saveCurrentList() {
-                this.saveList();
-                this.showSuccess('Lista guardada correctamente');
-            }
+            saveCurrentList() { this.saveList(); this.showSuccess('Lista guardada'); }
 
             undoLastAction() {
-                if (this.undoStack.length === 0) {
-                    this.showError('No hay acciones para deshacer');
-                    return;
-                }
-
-                const previousState = this.undoStack.pop();
-                this.items = previousState.items;
-                this.currentItemIndex = previousState.currentIndex;
+                if (this.undoStack.length === 0) { this.showError('No hay acciones para deshacer'); return; }
+                const { items, currentIndex } = this.undoStack.pop();
+                this.items = items;
+                this.currentItemIndex = currentIndex;
                 this.updateDisplay();
                 this.showSuccess('Acción deshecha');
             }
 
             clearAll() {
-                if (this.items.length === 0) {
-                    this.showError('La lista ya está vacía');
-                    return;
-                }
-
-                if (confirm('¿Estás seguro de que quieres limpiar toda la lista?')) {
+                if (this.items.length === 0) { this.showError('La lista ya está vacía'); return; }
+                if (confirm('¿Limpiar toda la lista?')) {
                     this.saveToUndoStack();
                     this.items = [];
                     this.currentItemIndex = -1;
@@ -1505,62 +1291,60 @@
             }
 
             newList() {
-                if (this.items.length > 0) {
-                    if (confirm('¿Estás seguro de que quieres crear una nueva lista? Se perderán los productos actuales.')) {
-                        this.saveToUndoStack();
-                        this.items = [];
-                        this.currentItemIndex = -1;
-                        this.updateDisplay();
-                        this.showSuccess('Nueva lista creada');
-                    }
-                } else {
-                    this.showError('La lista ya está vacía');
+                if (this.items.length > 0 && confirm('¿Crear nueva lista? Se perderán los productos actuales.')) {
+                    this.saveToUndoStack();
+                    this.items = [];
+                    this.currentItemIndex = -1;
+                    this.updateDisplay();
+                    this.showSuccess('Nueva lista creada');
                 }
             }
 
-            exportList() {
-                if (this.items.length === 0) {
-                    this.showError('No hay productos para exportar');
-                    return;
-                }
-
-                let csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += "Producto,Cantidad,Precio,ITBMS%,Subtotal,ITBMS,Total\n";
-                
+            exportAsCSV() {
+                let csvContent = "data:text/csv;charset=utf-8,Producto,Cantidad,Precio,ITBMS%,Subtotal,ITBMS,Total\n";
                 this.items.forEach(item => {
-                    csvContent += `"${item.name}",${item.quantity},${item.price},${item.tax},${item.subtotal},${item.taxAmount},${item.total}\n`;
+                    csvContent += `"${item.name}",${item.quantity},${item.price.toFixed(2)},${item.tax},${item.subtotal.toFixed(2)},${item.taxAmount.toFixed(2)},${item.total.toFixed(2)}\n`;
                 });
-                
-                // Add summary
-                csvContent += `,,,Subtotal,,,${this.calculateSubtotal()}\n`;
-                csvContent += `,,,ITBMS,,,${this.calculateTax()}\n`;
-                csvContent += `,,,TOTAL,,,${this.calculateTotal()}\n`;
-                
-                const encodedUri = encodeURI(csvContent);
+                const subtotal = this.calculateSubtotal(), tax = this.calculateTax(), total = this.calculateTotal();
+                csvContent += `\n,,,Subtotal:,"${subtotal.toFixed(2)}"\n,,,ITBMS:,"${tax.toFixed(2)}"\n,,,TOTAL:,"${total.toFixed(2)}"\n`;
                 const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
+                link.setAttribute("href", encodeURI(csvContent));
                 link.setAttribute("download", "lista_compras.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
                 this.showSuccess('Lista exportada a CSV');
+                this.hideExportModal();
             }
 
-            showCurrencyModal() {
-                this.showSettings();
+            exportAsTXT() {
+                let txtContent = "      Lista de Compras Inteligente\n========================================\n\n";
+                this.items.forEach(item => {
+                    const name = item.name.padEnd(20, ' ');
+                    const price = `${item.quantity} x ${this.formatCurrency(item.price)}`.padEnd(15, ' ');
+                    const total = this.formatCurrency(item.total).padStart(8, ' ');
+                    txtContent += `${name}${price}${total}\n`;
+                });
+                const subtotal = this.calculateSubtotal(), tax = this.calculateTax(), total = this.calculateTotal();
+                txtContent += "\n----------------------------------------\n";
+                txtContent += `Subtotal:${this.formatCurrency(subtotal).padStart(31, ' ')}\n`;
+                txtContent += `ITBMS:${this.formatCurrency(tax).padStart(34, ' ')}\n`;
+                txtContent += "========================================\n";
+                txtContent += `TOTAL:${this.formatCurrency(total).padStart(34, ' ')}\n`;
+                const blob = new Blob([txtContent], { type: 'text/plain' });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "lista_compras.txt";
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                this.showSuccess('Lista exportada a TXT');
+                this.hideExportModal();
             }
 
+            showCurrencyModal() { this.showSettings(); }
             showSettings() {
                 this.currencySelect.value = this.settings.currency;
                 this.defaultTaxInput.value = this.settings.defaultTax;
                 this.settingsModal.style.display = 'flex';
             }
-
-            hideSettings() {
-                this.settingsModal.style.display = 'none';
-            }
-
+            hideSettings() { this.settingsModal.style.display = 'none'; }
             saveNewSettings() {
                 this.settings.currency = this.currencySelect.value;
                 this.settings.defaultTax = parseFloat(this.defaultTaxInput.value) || 0;
@@ -1569,23 +1353,11 @@
                 this.updateDisplay();
                 this.showSuccess('Configuración guardada');
             }
-
-            showHelp() {
-                alert('Smart Market List - Ayuda\n\n• Agrega productos con nombre, precio y cantidad\n• Usa el historial para productos frecuentes\n• Navega entre productos con los botones de flecha\n• Guarda y exporta tus listas\n• Configura moneda e impuestos en ajustes\n• Usa la calculadora para hacer cálculos rápidos');
-            }
-
+            showHelp() { alert('Smart Market List - Ayuda\n\n- Agrega productos con nombre y precio.\n- Usa el historial para autocompletar.\n- Navega entre productos con las flechas.\n- Exporta tus listas en CSV o TXT.'); }
             saveToUndoStack() {
-                this.undoStack.push({
-                    items: [...this.items],
-                    currentIndex: this.currentItemIndex
-                });
-
-                // Limitar el tamaño de la pila de deshacer
-                if (this.undoStack.length > 10) {
-                    this.undoStack.shift();
-                }
+                this.undoStack.push({ items: JSON.parse(JSON.stringify(this.items)), currentIndex: this.currentItemIndex });
+                if (this.undoStack.length > 10) this.undoStack.shift();
             }
-
             clearInputs() {
                 this.itemNameInput.value = '';
                 this.itemPriceInput.value = '';
@@ -1593,36 +1365,19 @@
                 this.autocompleteList.style.display = 'none';
                 this.itemNameInput.focus();
             }
-
-            calculateSubtotal() {
-                return this.items.reduce((sum, item) => sum + item.subtotal, 0);
-            }
-
-            calculateTax() {
-                return this.items.reduce((sum, item) => sum + item.taxAmount, 0);
-            }
-
-            calculateTotal() {
-                return this.calculateSubtotal() + this.calculateTax();
-            }
-
+            calculateSubtotal() { return this.items.reduce((sum, item) => sum + item.subtotal, 0); }
+            calculateTax() { return this.items.reduce((sum, item) => sum + item.taxAmount, 0); }
+            calculateTotal() { return this.calculateSubtotal() + this.calculateTax(); }
             updateDisplay() {
                 this.updateItemsList();
                 this.updateSummary();
                 this.updateNavigationButtons();
             }
-
             updateItemsList() {
                 if (this.items.length === 0) {
-                    this.itemsList.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-cart-plus"></i>
-                            <p>No hay productos en la lista</p>
-                        </div>
-                    `;
+                    this.itemsList.innerHTML = `<div class="empty-state"><i class="fas fa-cart-plus"></i><p>No hay productos en la lista</p></div>`;
                     return;
                 }
-
                 this.itemsList.innerHTML = '';
                 this.items.forEach((item, index) => {
                     const itemElement = document.createElement('div');
@@ -1631,7 +1386,17 @@
                         itemElement.style.background = 'rgba(0, 212, 255, 0.1)';
                         itemElement.style.border = '1px solid rgba(0, 212, 255, 0.3)';
                     }
-                    
+                    let priceHistoryHTML = '';
+                    const productHistory = this.productHistory[item.name];
+                    if (productHistory && productHistory.priceHistory.length > 1) {
+                        const history = productHistory.priceHistory;
+                        const lastPrice = history[history.length - 1].price;
+                        const previousPrice = history[history.length - 2].price;
+                        const difference = lastPrice - previousPrice;
+                        if (difference > 0) priceHistoryHTML = `<div class="price-history">Anterior: ${this.formatCurrency(previousPrice)} (Subió ${this.formatCurrency(difference)} 🔼)</div>`;
+                        else if (difference < 0) priceHistoryHTML = `<div class="price-history">Anterior: ${this.formatCurrency(previousPrice)} (Bajó ${this.formatCurrency(Math.abs(difference))} 🔽)</div>`;
+                        else priceHistoryHTML = `<div class="price-history">Anterior: ${this.formatCurrency(previousPrice)} (Se mantuvo ⏸️)</div>`;
+                    }
                     itemElement.innerHTML = `
                         <div class="item-details">
                             <div class="item-name">${item.name}</div>
@@ -1640,82 +1405,53 @@
                                 <span><i class="fas fa-layer-group"></i> ${item.quantity}</span>
                                 ${item.tax > 0 ? `<span><i class="fas fa-percentage"></i> ${item.tax}%</span>` : ''}
                             </div>
+                            ${priceHistoryHTML}
                         </div>
                         <div class="item-price-container">
                             <div class="item-price">${this.formatCurrency(item.total)}</div>
                         </div>
                         <div class="item-actions">
-                            <button class="item-action-btn edit-btn" data-id="${item.id}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="item-action-btn delete-item-btn" data-id="${item.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <button class="item-action-btn edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
+                            <button class="item-action-btn delete-item-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
                         </div>
                     `;
                     this.itemsList.appendChild(itemElement);
                 });
-
-                // Add event listeners for item actions
-                document.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const id = parseInt(e.currentTarget.getAttribute('data-id'));
-                        this.editItem(id);
-                    });
-                });
-
-                document.querySelectorAll('.delete-item-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const id = parseInt(e.currentTarget.getAttribute('data-id'));
-                        this.deleteItem(id);
-                    });
-                });
+                document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', e => this.editItem(parseInt(e.currentTarget.dataset.id))));
+                document.querySelectorAll('.delete-item-btn').forEach(btn => btn.addEventListener('click', e => this.deleteItem(parseInt(e.currentTarget.dataset.id))));
             }
-
             editItem(id) {
                 const itemIndex = this.items.findIndex(item => item.id === id);
                 if (itemIndex === -1) return;
-
                 const item = this.items[itemIndex];
                 this.itemNameInput.value = item.name;
                 this.itemPriceInput.value = item.price;
                 this.quantityInput.value = item.quantity;
                 this.taxInput.value = item.tax;
-                
                 this.saveToUndoStack();
                 this.items.splice(itemIndex, 1);
                 this.currentItemIndex = -1;
                 this.updateDisplay();
                 this.itemNameInput.focus();
-                this.showSuccess('Producto listo para editar');
+                this.showSuccess('Editando producto');
             }
-
             deleteItem(id) {
                 const itemIndex = this.items.findIndex(item => item.id === id);
                 if (itemIndex === -1) return;
-
                 const itemName = this.items[itemIndex].name;
-                if (confirm(`¿Eliminar "${itemName}" de la lista?`)) {
+                if (confirm(`¿Eliminar "${itemName}"?`)) {
                     this.saveToUndoStack();
                     this.items.splice(itemIndex, 1);
-                    if (this.currentItemIndex >= itemIndex) {
-                        this.currentItemIndex = Math.max(0, this.currentItemIndex - 1);
-                    }
+                    if (this.currentItemIndex >= itemIndex) this.currentItemIndex = Math.max(0, this.currentItemIndex - 1);
                     this.updateDisplay();
                     this.showSuccess(`"${itemName}" eliminado`);
                 }
             }
-
             updateSummary() {
-                const subtotal = this.calculateSubtotal();
-                const tax = this.calculateTax();
-                const total = this.calculateTotal();
-
-                this.subTotalDisplay.textContent = this.formatCurrency(subtotal);
-                this.itemTaxesDisplay.textContent = this.formatCurrency(tax);
-                this.totalAmountDisplay.textContent = this.formatCurrency(total);
+                this.subTotalDisplay.textContent = this.formatCurrency(this.calculateSubtotal());
+                this.itemTaxesDisplay.textContent = this.formatCurrency(this.calculateTax());
+                this.totalAmountDisplay.textContent = this.formatCurrency(this.calculateTotal());
             }
-
             updateNavigationButtons() {
                 const hasItems = this.items.length > 0;
                 this.deleteBtn.disabled = !hasItems;
@@ -1726,46 +1462,21 @@
                 this.clearBtn.disabled = !hasItems;
                 this.exportBtn.disabled = !hasItems;
             }
-
-            formatCurrency(amount) {
-                return `${this.settings.currency}${amount.toFixed(2)}`;
-            }
-
-            showSuccess(message) {
-                this.showNotification(message, 'success');
-            }
-
-            showError(message) {
-                this.showNotification(message, 'error');
-            }
-
+            formatCurrency(amount) { return `${this.settings.currency}${amount.toFixed(2)}`; }
+            showSuccess(message) { this.showNotification(message, 'success'); }
+            showError(message) { this.showNotification(message, 'error'); }
             showNotification(message, type) {
-                // Remove any existing notifications
-                const existingNotifications = document.querySelectorAll('.notification');
-                existingNotifications.forEach(notification => {
-                    notification.remove();
-                });
-
+                document.querySelectorAll('.notification').forEach(n => n.remove());
                 const notification = document.createElement('div');
                 notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
-                    <span>${message}</span>
-                `;
+                notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i><span>${message}</span>`;
                 document.body.appendChild(notification);
-
                 setTimeout(() => {
-                    notification.style.animation = 'slideOut 0.3s ease-out';
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 300);
+                    notification.style.animation = 'slideOut 0.3s ease-out forwards';
+                    notification.addEventListener('animationend', () => notification.remove());
                 }, 3000);
             }
         }
-
-        // Initialize the app when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             new ShoppingCalculator();
         });
